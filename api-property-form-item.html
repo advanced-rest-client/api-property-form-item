@@ -57,16 +57,16 @@
     }
     </style>
     <template is="dom-if" if="[[isEnum]]">
-      <paper-dropdown-menu label="[[model.inputLabel]]" name="[[name]]" required="[[model.required]]" data-type="enum" no-label-float="[[noLabelFloat]]">
+      <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" data-type="enum" no-label-float="[[noLabelFloat]]">
         <paper-listbox slot="dropdown-content" attr-for-selected="data-value" selected="{{value}}">
-          <template is="dom-repeat" items="[[model.enum]]">
+          <template is="dom-repeat" items="[[model.schema.enum]]">
             <paper-item data-value$="[[item]]">[[item]]</paper-item>
           </template>
         </paper-listbox>
       </paper-dropdown-menu>
     </template>
     <template is="dom-if" if="[[isBoolean]]">
-      <paper-dropdown-menu label="[[model.inputLabel]]" name="[[name]]" required="[[model.required]]" data-type="boolean" no-label-float="[[noLabelFloat]]">
+      <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" data-type="boolean" no-label-float="[[noLabelFloat]]">
         <paper-listbox slot="dropdown-content" attr-for-selected="data-value" selected="{{value}}">
           <paper-item data-value="true">True</paper-item>
           <paper-item data-value="false">False</paper-item>
@@ -74,13 +74,42 @@
       </paper-dropdown-menu>
     </template>
     <template is="dom-if" if="[[isInput]]">
-      <paper-input label="[[model.inputLabel]]" value="{{value}}" required="[[model.required]]" pattern="[[model.pattern]]" name="[[name]]" auto-validate type="[[model.inputType]]" min="[[model.minimum]]" max="[[model.maximum]]" maxlength="[[model.maxLength]]" minlength="[[model.minLength]]" always-float-label="[[model.inputFloatLabel]]" placeholder="[[model.inputPlaceholder]]" no-label-float="[[noLabelFloat]]" data-type="input"></paper-input>
+      <paper-input
+        label="[[model.schema.inputLabel]]"
+        value="{{value}}"
+        required="[[model.required]]"
+        pattern="[[model.schema.pattern]]"
+        name="[[name]]"
+        auto-validate
+        type="[[model.schema.inputType]]"
+        min="[[model.schema.minimum]]"
+        max="[[model.schema.maximum]]"
+        maxlength="[[model.schema.maxLength]]"
+        minlength="[[model.schema.minLength]]"
+        always-float-label="[[model.schema.inputFloatLabel]]"
+        placeholder="[[model.schema.inputPlaceholder]]"
+        no-label-float="[[noLabelFloat]]"
+        data-type="input"></paper-input>
     </template>
     <template is="dom-if" if="[[isArray]]">
-      <label hidden$="[[noLabelFloat]]">[[model.inputLabel]]</label>
-      <template is="dom-repeat" items="[[arrayValue]]">
+      <label hidden$="[[noLabelFloat]]">[[model.schema.inputLabel]]</label>
+      <template is="dom-repeat" items="[[arrayValue]]" class="array-repeater">
         <div class="array-item">
-          <paper-input label="Parameter value" value="{{item.value}}" required="[[model.required]]" pattern="[[model.pattern]]" name="[[name]]" auto-validate type="[[model.inputType]]" min="[[model.minimum]]" max="[[model.maximum]]" maxlength="[[model.maxLength]]" minlength="[[model.minLength]]" no-label-float on-input="_arrayValueChanged" no-label-float="[[noLabelFloat]]"  data-type="array"></paper-input>
+          <paper-input
+            label="Parameter value"
+            value="{{item.value}}"
+            required="[[model.required]]"
+            pattern="[[model.schema.pattern]]"
+            name="[[name]]"
+            auto-validate type="[[model.schema.inputType]]"
+            min="[[model.schema.minimum]]"
+            max="[[model.schema.maximum]]"
+            maxlength="[[model.schema.maxLength]]"
+            minlength="[[model.schema.minLength]]"
+            no-label-float
+            on-input="_arrayValueChanged"
+            no-label-float="[[noLabelFloat]]"
+            data-type="array"></paper-input>
           <template is="dom-if" if="[[index]]">
             <span>
               <paper-icon-button class="action-icon" suffix icon="arc:remove-circle-outline" on-tap="_removeArrayValue"></paper-icon-button>
@@ -228,30 +257,39 @@
       if (!model) {
         return;
       }
-      if (model.isEnum) {
-        this._setIsEnum(true);
-        return;
+      const schema = model.schema;
+      switch (true) {
+        case schema.isEnum:
+          this._setIsEnum(true);
+          break;
+        case schema.isArray:
+          this._prepareArraySchema(model);
+          break;
+        case schema.isBool:
+          this._setIsBoolean(true);
+          break;
+        default:
+          this._setIsInput(true);
       }
-      if (model.isArray) {
-        this._setIsArray(true);
-        let value;
-        if (model.value && model.value instanceof Array) {
-          value = model.value.map(function(item) {
-            return {
-              value: item
-            };
-          });
-        } else {
-          value = [];
-        }
-        this._setArrayValue(value);
-        return;
+    }
+    /**
+     * Sets `arrayValue` from model's value.
+     *
+     * @param {Object} model ARC amf view model.
+     */
+    _prepareArraySchema(model) {
+      this._setIsArray(true);
+      let value;
+      if (model.value && model.value instanceof Array) {
+        value = model.value.map((item) => {
+          return {
+            value: item
+          };
+        });
+      } else {
+        value = [];
       }
-      if (model.isBoolean) {
-        this._setIsBoolean(true);
-        return;
-      }
-      this._setIsInput(true);
+      this._setArrayValue(value);
     }
 
     // Sets array values if needed
@@ -327,20 +365,19 @@
 
     // Removes item from array value.
     _removeArrayValue(e) {
-      var repeater = this.$$('template[is="dom-repeat"]');
-      var index = repeater.indexForElement(e.target);
+      const repeater = this.shadowRoot.querySelector('.array-repeater');
+      const index = repeater.indexForElement(e.target);
       this.removeArrayValue(index);
     }
 
     _getValidity() {
       switch (true) {
         case this.isInput:
-          var input = this.$$('paper-input[data-type="input"]');
+          const input = this.shadowRoot.querySelector('paper-input[data-type="input"]');
           return input.validate();
         case this.isArray:
-          var inputs = Polymer.dom(this.root)
-            .querySelectorAll('paper-input[data-type="array"]');
-          for (var i = 0; i < inputs.length; i++) {
+          const inputs = this.shadowRoot.querySelectorAll('paper-input[data-type="array"]');
+          for (let i = 0; i < inputs.length; i++) {
             if (!inputs[i].validate()) {
               return false;
             }

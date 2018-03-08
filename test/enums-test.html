@@ -17,15 +17,17 @@
     </template>
   </test-fixture>
   <script>
-  suite('Boolean model', () => {
+  suite('Enum model', () => {
     let element;
     let model;
     setup(function(done) {
       element = fixture('basic');
       model = {
-        inputType: 'string',
-        isEnum: true,
-        enum: ['apple', 'banana', 'cherries']
+        schema: {
+          inputType: 'string',
+          isEnum: true,
+          enum: ['apple', 'banana', 'cherries']
+        }
       };
       element.model = model;
       flush(done);

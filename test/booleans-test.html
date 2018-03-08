@@ -23,8 +23,10 @@
     setup(function(done) {
       element = fixture('basic');
       model = {
-        inputType: 'string',
-        isBoolean: true
+        schema: {
+          inputType: 'string',
+          isBool: true
+        }
       };
       element.model = model;
       flush(done);
