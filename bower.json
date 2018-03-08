@@ -1,5 +1,5 @@
 {
-  "version": "2.0.3",
+  "version": "2.0.0",
   "name": "api-property-form-item",
   "description": "An input to use with forms to render inputs based in ARC view-model",
   "main": "api-property-form-item.html",
