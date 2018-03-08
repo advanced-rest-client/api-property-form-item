@@ -21,7 +21,7 @@
     <demo-snippet>
       <dom-bind>
         <template is="dom-bind">
-          <api-property-form-item model='{"inputLabel": "Enter value"}' name="simpleModel" value="{{value}}"></api-property-form-item>
+          <api-property-form-item model='{"schema":{"inputLabel": "Enter value"}}' name="simpleModel" value="{{value}}"></api-property-form-item>
           <code>[[value]]</code>
         </template>
       </dom-bind>
@@ -32,7 +32,7 @@
     <demo-snippet>
       <dom-bind>
         <template is="dom-bind">
-          <api-property-form-item model='{"inputLabel": "Enter value", "pattern": "[a-zA-Z0-9_]*"}' name="patternModel" value="{{value}}"></api-property-form-item>
+          <api-property-form-item model='{"schema":{"inputLabel": "Enter value", "pattern": "[a-zA-Z0-9_]*"}}' name="patternModel" value="{{value}}"></api-property-form-item>
           <code>[[value]]</code>
         </template>
       </dom-bind>
@@ -42,7 +42,7 @@
     <demo-snippet>
       <dom-bind>
         <template is="dom-bind">
-          <api-property-form-item model='{"inputLabel": "Enter value", "required": true}' name="requiredModel" value="{{value}}"></api-property-form-item>
+          <api-property-form-item model='{"schema":{"inputLabel": "Enter value"}, "required": true}' name="requiredModel" value="{{value}}"></api-property-form-item>
           <code>[[value]]</code>
         </template>
       </dom-bind>
@@ -52,7 +52,7 @@
     <demo-snippet>
       <dom-bind>
         <template is="dom-bind">
-          <api-property-form-item model='{"inputLabel": "Enter value", "inputPlaceholder": "This is the placeholder", "inputFloatLabel": true}' name="placeholderModel" value="{{value}}"></api-property-form-item>
+          <api-property-form-item model='{"schema":{"inputLabel": "Enter value", "inputPlaceholder": "This is the placeholder", "inputFloatLabel": true}}' name="placeholderModel" value="{{value}}"></api-property-form-item>
           <code>[[value]]</code>
         </template>
       </dom-bind>
@@ -62,7 +62,7 @@
     <demo-snippet>
       <dom-bind>
         <template is="dom-bind">
-          <api-property-form-item model='{"inputLabel": "Enter number value", "inputType": "number", "minimum": 1, "maximum": 100}' name="numericModel" value="{{value}}"></api-property-form-item>
+          <api-property-form-item model='{"schema":{"inputLabel": "Enter number value", "inputType": "number", "minimum": 1, "maximum": 100}}' name="numericModel" value="{{value}}"></api-property-form-item>
           <code>[[value]]</code>
         </template>
       </dom-bind>
@@ -72,7 +72,7 @@
     <demo-snippet>
       <dom-bind>
         <template is="dom-bind">
-          <api-property-form-item model='{"inputLabel": "Select date", "inputType": "date"}' name="dateModel" value="{{value}}"></api-property-form-item>
+          <api-property-form-item model='{"schema":{"inputLabel": "Select date", "inputType": "date"}}' name="dateModel" value="{{value}}"></api-property-form-item>
           <code>[[value]]</code>
         </template>
       </dom-bind>
@@ -82,7 +82,7 @@
     <demo-snippet>
       <dom-bind>
         <template is="dom-bind">
-          <api-property-form-item model='{"inputLabel": "Select fruit", "isEnum": true, "enum": ["apple", "banana", "cherries", "grapes", "lemon", "orange", "pear", "watermelon"]}' name="enumModel" value="{{value}}"></api-property-form-item>
+          <api-property-form-item model='{"schema":{"inputLabel": "Select fruit", "isEnum": true, "enum": ["apple", "banana", "cherries", "grapes", "lemon", "orange", "pear", "watermelon"]}}' name="enumModel" value="{{value}}"></api-property-form-item>
           <code>[[value]]</code>
         </template>
       </dom-bind>
@@ -92,7 +92,7 @@
     <demo-snippet>
       <dom-bind>
         <template is="dom-bind">
-          <api-property-form-item model='{"inputLabel": "Select boolean value", "isBoolean": true}' name="enumModel" value="{{value}}"></api-property-form-item>
+          <api-property-form-item model='{"schema":{"inputLabel": "Select boolean value", "isBool": true}}' name="enumModel" value="{{value}}"></api-property-form-item>
           <code>[[value]]</code>
         </template>
       </dom-bind>
@@ -102,7 +102,7 @@
     <demo-snippet>
       <dom-bind>
         <template is="dom-bind">
-          <api-property-form-item model='{"inputLabel": "Enter values", "isArray": true, "inputType": "text", "minLength": 2, "maxLength": 20}' name="arrayModel" value="{{value}}"></api-property-form-item>
+          <api-property-form-item model='{"schema":{"inputLabel": "Enter values", "isArray": true, "inputType": "text", "minLength": 2, "maxLength": 20}}' name="arrayModel" value="{{value}}"></api-property-form-item>
           <code>[[value]]</code>
         </template>
       </dom-bind>
