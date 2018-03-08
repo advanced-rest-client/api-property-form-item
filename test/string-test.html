@@ -17,17 +17,19 @@
     </template>
   </test-fixture>
   <script>
-  suite('Boolean model', () => {
+  suite('String model', () => {
     let element;
     let model;
     setup(function(done) {
       element = fixture('basic');
       model = {
-        inputLabel: 'Enter value',
-        pattern: '[a-zA-Z0-9_]*',
         required: true,
-        inputPlaceholder: 'This is the placeholder',
-        inputFloatLabel: true
+        schema: {
+          inputLabel: 'Enter value',
+          pattern: '[a-zA-Z0-9_]*',
+          inputPlaceholder: 'This is the placeholder',
+          inputFloatLabel: true
+        }
       };
       element.model = model;
       flush(done);
@@ -74,15 +76,15 @@
     test('Passing inputLabel model property', function() {
       const shadowRoot = element.shadowRoot;
       const node = shadowRoot.querySelector('paper-input');
-      assert.equal(node.label, model.inputLabel);
+      assert.equal(node.label, model.schema.inputLabel);
     });
 
     test('Passing pattern model property', function() {
       const shadowRoot = element.shadowRoot;
       const node = shadowRoot.querySelector('paper-input');
-      assert.equal(node.pattern, model.pattern);
+      assert.equal(node.pattern, model.schema.pattern);
     });
-    
+
     test('Passing required model property', function() {
       const shadowRoot = element.shadowRoot;
       const node = shadowRoot.querySelector('paper-input');
@@ -92,7 +94,7 @@
     test('Passing inputPlaceholder model property', function() {
       const shadowRoot = element.shadowRoot;
       const node = shadowRoot.querySelector('paper-input');
-      assert.equal(node.placeholder, model.inputPlaceholder);
+      assert.equal(node.placeholder, model.schema.inputPlaceholder);
     });
 
     test('Passing inputFloatLabel model property', function() {

@@ -26,10 +26,12 @@
         setup(function(done) {
           element = fixture('basic');
           model = {
-            isArray: true,
-            inputType: 'number',
-            minimum: 2,
-            maximum: 20
+            schema: {
+              isArray: true,
+              inputType: 'number',
+              minimum: 2,
+              maximum: 20
+            }
           };
           element.model = model;
           flush(done);
