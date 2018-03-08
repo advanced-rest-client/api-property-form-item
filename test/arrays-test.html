@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>api-property-form-item test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../api-property-form-item.html">
+  </head>
+  <body>
+
+    <test-fixture id="basic">
+      <template>
+        <api-property-form-item></api-property-form-item>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('Array model', () => {
+        let element;
+        let model;
+        setup(function(done) {
+          element = fixture('basic');
+          model = {
+            isArray: true,
+            inputType: 'number',
+            minimum: 2,
+            maximum: 20
+          };
+          element.model = model;
+          flush(done);
+        });
+
+        test('isEnum is false', function() {
+          assert.isFalse(element.isEnum);
+        });
+
+        test('isInput is false', function() {
+          assert.isFalse(element.isInput);
+        });
+        test('isArray is true', function() {
+          assert.isTrue(element.isArray);
+        });
+        test('isBoolean is false', function() {
+          assert.isFalse(element.isBoolean);
+        });
+        test('arrayValue is computed', function() {
+          assert.typeOf(element.arrayValue, 'array');
+        });
+        test('Dropdowns are not rendered', function() {
+          var node = Polymer.dom(element.root).querySelector('paper-dropdown-menu');
+          assert.notOk(node);
+        });
+        test('<label> for array values is rendered', function() {
+          var node = Polymer.dom(element.root).querySelector('label');
+          assert.ok(node);
+        });
+        test('Has no inputs', function() {
+          var nodes = Polymer.dom(element.root).querySelectorAll('paper-input');
+          assert.lengthOf(nodes, 0);
+        });
+        test('Will not pass validation for invalid value', function(done) {
+          element.addEmptyArrayValue();
+          element.set('arrayValue.0.value', 1);
+          flush(() => {
+            assert.isFalse(element.validate());
+            done();
+          });
+        });
+
+        test('Will pass validation for valid value', function(done) {
+          element.addEmptyArrayValue();
+          element.set('arrayValue.0.value', 2);
+          flush(() => {
+            assert.isTrue(element.validate());
+            done();
+          });
+        });
+      });
+    </script>
+
+  </body>
+</html>

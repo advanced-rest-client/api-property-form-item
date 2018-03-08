@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>api-property-form-item demo</title>
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../api-property-form-item.html">
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Text editor</h3>
+    <demo-snippet>
+      <dom-bind>
+        <template is="dom-bind">
+          <api-property-form-item model='{"inputLabel": "Enter value"}' name="simpleModel" value="{{value}}"></api-property-form-item>
+          <code>[[value]]</code>
+        </template>
+      </dom-bind>
+    </demo-snippet>
+
+    <h3>Text editor with pattern</h3>
+    <p>Pattern: <code>[a-zA-Z0-9_]*</code></p>
+    <demo-snippet>
+      <dom-bind>
+        <template is="dom-bind">
+          <api-property-form-item model='{"inputLabel": "Enter value", "pattern": "[a-zA-Z0-9_]*"}' name="patternModel" value="{{value}}"></api-property-form-item>
+          <code>[[value]]</code>
+        </template>
+      </dom-bind>
+    </demo-snippet>
+
+    <h3>Required input</h3>
+    <demo-snippet>
+      <dom-bind>
+        <template is="dom-bind">
+          <api-property-form-item model='{"inputLabel": "Enter value", "required": true}' name="requiredModel" value="{{value}}"></api-property-form-item>
+          <code>[[value]]</code>
+        </template>
+      </dom-bind>
+    </demo-snippet>
+
+    <h3>With placeholder</h3>
+    <demo-snippet>
+      <dom-bind>
+        <template is="dom-bind">
+          <api-property-form-item model='{"inputLabel": "Enter value", "inputPlaceholder": "This is the placeholder", "inputFloatLabel": true}' name="placeholderModel" value="{{value}}"></api-property-form-item>
+          <code>[[value]]</code>
+        </template>
+      </dom-bind>
+    </demo-snippet>
+
+    <h3>Number editor</h3>
+    <demo-snippet>
+      <dom-bind>
+        <template is="dom-bind">
+          <api-property-form-item model='{"inputLabel": "Enter number value", "inputType": "number", "minimum": 1, "maximum": 100}' name="numericModel" value="{{value}}"></api-property-form-item>
+          <code>[[value]]</code>
+        </template>
+      </dom-bind>
+    </demo-snippet>
+
+    <h3>Date editor</h3>
+    <demo-snippet>
+      <dom-bind>
+        <template is="dom-bind">
+          <api-property-form-item model='{"inputLabel": "Select date", "inputType": "date"}' name="dateModel" value="{{value}}"></api-property-form-item>
+          <code>[[value]]</code>
+        </template>
+      </dom-bind>
+    </demo-snippet>
+
+    <h3>Enum values</h3>
+    <demo-snippet>
+      <dom-bind>
+        <template is="dom-bind">
+          <api-property-form-item model='{"inputLabel": "Select fruit", "isEnum": true, "enum": ["apple", "banana", "cherries", "grapes", "lemon", "orange", "pear", "watermelon"]}' name="enumModel" value="{{value}}"></api-property-form-item>
+          <code>[[value]]</code>
+        </template>
+      </dom-bind>
+    </demo-snippet>
+
+    <h3>Boolean value</h3>
+    <demo-snippet>
+      <dom-bind>
+        <template is="dom-bind">
+          <api-property-form-item model='{"inputLabel": "Select boolean value", "isBoolean": true}' name="enumModel" value="{{value}}"></api-property-form-item>
+          <code>[[value]]</code>
+        </template>
+      </dom-bind>
+    </demo-snippet>
+
+    <h3>Array value</h3>
+    <demo-snippet>
+      <dom-bind>
+        <template is="dom-bind">
+          <api-property-form-item model='{"inputLabel": "Enter values", "isArray": true, "inputType": "text", "minLength": 2, "maxLength": 20}' name="arrayModel" value="{{value}}"></api-property-form-item>
+          <code>[[value]]</code>
+        </template>
+      </dom-bind>
+    </demo-snippet>
+  </div>
+</body>
+</html>

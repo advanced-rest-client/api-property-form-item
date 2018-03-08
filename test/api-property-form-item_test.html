@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>api-property-form-item test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../api-property-form-item.html">
+  </head>
+  <body>
+
+    <test-fixture id="BasicTestFixture">
+      <template>
+        <api-property-form-item></api-property-form-item>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('api-property-form-item', () => {
+
+        test('isInput is default value without the model', () => {
+          const element = fixture('BasicTestFixture');
+          assert.isTrue(element.isInput);
+        });
+
+        // test('instantiating the element with default properties works', () => {
+        //   const element = fixture('BasicTestFixture');
+        //   assert.equal(element.prop1, 'api-property-form-item');
+        //   const elementShadowRoot = element.shadowRoot;
+        //   const elementHeader = elementShadowRoot.querySelector('h2');
+        //   assert.equal(elementHeader.innerHTML, 'Hello api-property-form-item!');
+        // });
+        //
+        // test('setting a property on the element works', () => {
+        //   // Create a test fixture
+        //   const element = fixture('ChangedPropertyTestFixture');
+        //   assert.equal(element.prop1, 'new-prop1');
+        //   const elementShadowRoot = element.shadowRoot;
+        //   const elementHeader = elementShadowRoot.querySelector('h2');
+        //   assert.equal(elementHeader.innerHTML, 'Hello new-prop1!');
+        // });
+
+      });
+    </script>
+
+  </body>
+</html>
