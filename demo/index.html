@@ -42,7 +42,7 @@
     <demo-snippet>
       <dom-bind>
         <template is="dom-bind">
-          <api-property-form-item model='{"schema":{"inputLabel": "Enter value"}, "required": true}' name="requiredModel" value="{{value}}"></api-property-form-item>
+          <api-property-form-item model='{"schema":{"inputLabel": "Enter value"}, "required": true}' required name="requiredModel" value="{{value}}"></api-property-form-item>
           <code>[[value]]</code>
         </template>
       </dom-bind>
@@ -102,7 +102,7 @@
     <demo-snippet>
       <dom-bind>
         <template is="dom-bind">
-          <api-property-form-item model='{"schema":{"inputLabel": "Enter values", "isArray": true, "inputType": "text", "minLength": 2, "maxLength": 20}}' name="arrayModel" value="{{value}}"></api-property-form-item>
+          <api-property-form-item model='{"schema":{"inputLabel": "Enter values", "isArray": true, "inputType": "text", "minLength": 2, "maxLength": 20}}' name="arrayModel" value="{{value}}" is-array></api-property-form-item>
           <code>[[value]]</code>
         </template>
       </dom-bind>

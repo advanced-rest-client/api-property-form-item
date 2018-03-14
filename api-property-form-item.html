@@ -16,11 +16,18 @@
     <style>
     :host([required]) paper-input {
       --paper-input-container-label: {
-        color: var(--raml-type-form-input-required-label-color, rgba(0, 0, 0, 0.74));
-      }
+        color: var(--api-property-form-item-input-label-color, var(--raml-type-form-input-required-label-color, rgba(0, 0, 0, 0.74)));
+      };
     }
 
-    :host([is-array]) {
+    :host([required]) paper-input {
+      --paper-input-container-label: {
+        color: var(--api-property-form-item-input-label-required-color, var(--raml-type-form-input-required-label-color-required, rgba(0, 0, 0, 0.72)));
+        font-weight: 500;
+      };
+    }
+
+    :host([is-array]) .content {
       padding-left: 8px;
       border-left: 1px var(--raml-type-form-input-array-border-color, rgba(0, 0, 0, 0.14)) solid;
     }
@@ -56,75 +63,77 @@
       @apply --arc-font-caption;
     }
     </style>
-    <template is="dom-if" if="[[isEnum]]">
-      <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" data-type="enum" no-label-float="[[noLabelFloat]]">
-        <paper-listbox slot="dropdown-content" attr-for-selected="data-value" selected="{{value}}">
-          <template is="dom-repeat" items="[[model.schema.enum]]">
-            <paper-item data-value$="[[item]]">[[item]]</paper-item>
-          </template>
-        </paper-listbox>
-      </paper-dropdown-menu>
-    </template>
-    <template is="dom-if" if="[[isBoolean]]">
-      <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" data-type="boolean" no-label-float="[[noLabelFloat]]">
-        <paper-listbox slot="dropdown-content" attr-for-selected="data-value" selected="{{value}}">
-          <paper-item data-value="true">True</paper-item>
-          <paper-item data-value="false">False</paper-item>
-        </paper-listbox>
-      </paper-dropdown-menu>
-    </template>
-    <template is="dom-if" if="[[isInput]]">
-      <paper-input
-        label="[[model.schema.inputLabel]]"
-        value="{{value}}"
-        required="[[model.required]]"
-        pattern="[[model.schema.pattern]]"
-        name="[[name]]"
-        auto-validate
-        type="[[model.schema.inputType]]"
-        min="[[model.schema.minimum]]"
-        max="[[model.schema.maximum]]"
-        maxlength="[[model.schema.maxLength]]"
-        minlength="[[model.schema.minLength]]"
-        always-float-label="[[model.schema.inputFloatLabel]]"
-        placeholder="[[model.schema.inputPlaceholder]]"
-        no-label-float="[[noLabelFloat]]"
-        data-type="input"></paper-input>
-    </template>
-    <template is="dom-if" if="[[isArray]]">
-      <label hidden$="[[noLabelFloat]]">[[model.schema.inputLabel]]</label>
-      <template is="dom-repeat" items="[[arrayValue]]" class="array-repeater">
-        <div class="array-item">
-          <paper-input
-            label="Parameter value"
-            value="{{item.value}}"
-            required="[[model.required]]"
-            pattern="[[model.schema.pattern]]"
-            name="[[name]]"
-            auto-validate type="[[model.schema.inputType]]"
-            min="[[model.schema.minimum]]"
-            max="[[model.schema.maximum]]"
-            maxlength="[[model.schema.maxLength]]"
-            minlength="[[model.schema.minLength]]"
-            no-label-float
-            on-input="_arrayValueChanged"
-            no-label-float="[[noLabelFloat]]"
-            data-type="array"></paper-input>
-          <template is="dom-if" if="[[index]]">
-            <span>
-              <paper-icon-button class="action-icon" suffix icon="arc:remove-circle-outline" on-tap="_removeArrayValue"></paper-icon-button>
-              <paper-tooltip position="left" offset="1" margin-top="1" animation-delay="300">Remove array value</paper-tooltip>
-            </span>
-          </template>
+    <div class="content">
+      <template is="dom-if" if="[[isEnum]]">
+        <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" data-type="enum" no-label-float="[[noLabelFloat]]">
+          <paper-listbox slot="dropdown-content" attr-for-selected="data-value" selected="{{value}}">
+            <template is="dom-repeat" items="[[model.schema.enum]]">
+              <paper-item data-value$="[[item]]">[[item]]</paper-item>
+            </template>
+          </paper-listbox>
+        </paper-dropdown-menu>
+      </template>
+      <template is="dom-if" if="[[isBoolean]]">
+        <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" data-type="boolean" no-label-float="[[noLabelFloat]]">
+          <paper-listbox slot="dropdown-content" attr-for-selected="data-value" selected="{{value}}">
+            <paper-item data-value="true">True</paper-item>
+            <paper-item data-value="false">False</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
+      </template>
+      <template is="dom-if" if="[[isInput]]">
+        <paper-input
+          label="[[model.schema.inputLabel]]"
+          value="{{value}}"
+          required="[[model.required]]"
+          pattern="[[model.schema.pattern]]"
+          name="[[name]]"
+          auto-validate
+          type="[[model.schema.inputType]]"
+          min="[[model.schema.minimum]]"
+          max="[[model.schema.maximum]]"
+          maxlength="[[model.schema.maxLength]]"
+          minlength="[[model.schema.minLength]]"
+          always-float-label="[[model.schema.inputFloatLabel]]"
+          placeholder="[[model.schema.inputPlaceholder]]"
+          no-label-float="[[noLabelFloat]]"
+          data-type="input"></paper-input>
+      </template>
+      <template is="dom-if" if="[[isArray]]">
+        <label hidden$="[[noLabelFloat]]">[[model.schema.inputLabel]]</label>
+        <template is="dom-repeat" items="[[arrayValue]]" class="array-repeater">
+          <div class="array-item">
+            <paper-input
+              label="Parameter value"
+              value="{{item.value}}"
+              required="[[model.required]]"
+              pattern="[[model.schema.pattern]]"
+              name="[[name]]"
+              auto-validate type="[[model.schema.inputType]]"
+              min="[[model.schema.minimum]]"
+              max="[[model.schema.maximum]]"
+              maxlength="[[model.schema.maxLength]]"
+              minlength="[[model.schema.minLength]]"
+              no-label-float
+              on-input="_arrayValueChanged"
+              no-label-float="[[noLabelFloat]]"
+              data-type="array"></paper-input>
+            <template is="dom-if" if="[[index]]">
+              <span>
+                <paper-icon-button class="action-icon" suffix icon="arc:remove-circle-outline" on-tap="_removeArrayValue"></paper-icon-button>
+                <paper-tooltip position="left" offset="1" margin-top="1" animation-delay="300">Remove array value</paper-tooltip>
+              </span>
+            </template>
+          </div>
+        </template>
+        <div class="add-action">
+          <paper-button on-tap="addEmptyArrayValue" title="Add array velue button">
+            <iron-icon class="action-icon" icon="arc:add-circle-outline" alt="Add array value icon"></iron-icon>
+            Add array value
+          </paper-button>
         </div>
       </template>
-      <div class="add-action">
-        <paper-button on-tap="addEmptyArrayValue">
-          <iron-icon class="action-icon" icon="arc:add-circle-outline"></iron-icon>
-          Add array value
-        </paper-button>
-      </div>
-    </template>
+    </div>
   </template>
   <script>
   /**
@@ -153,7 +162,8 @@
    * Custom property | Description | Default
    * ----------------|-------------|----------
    * `--raml-type-form-input` | Mixin applied to the element | `{}`
-   * `--raml-type-form-input-required-label-color` | Input's label color when required | `rgba(0, 0, 0, 0.74)`
+   * `--api-property-form-item-input-label-color` | Input's label color | `rgba(0, 0, 0, 0.74)`
+   * `--api-property-form-item-input-label-required-color` | Input's label color when required | `rgba(0, 0, 0, 0.74)`
    * `--from-row-action-icon-color` | Theme variable, color of the action icon button | `--icon-button-color` or `rgba(0, 0, 0, 0.74)`
    * `--from-row-action-icon-color-hover` | Theme variable, color of the action icon button when hovered | `--accent-color` or `rgba(0, 0, 0, 0.74)`
    * `--from-row-action-icon-opacity` | Opacity of the action icon button | `0.54`
@@ -175,7 +185,8 @@
    * @polymer
    * @demo demo/index.html
    */
-  class ApiPropertyFormItem extends Polymer.mixinBehaviors(Polymer.IronValidatableBehavior, Polymer.Element) {
+  class ApiPropertyFormItem extends
+    Polymer.mixinBehaviors(Polymer.IronValidatableBehavior, Polymer.Element) {
     static get is() {
       return 'api-property-form-item';
     }
@@ -193,7 +204,10 @@
         /**
          * Name of the form item
          */
-        name: String,
+        name: {
+          type: String,
+          reflectToAttribute: true
+        },
         /**
          * Input's value.
          */
