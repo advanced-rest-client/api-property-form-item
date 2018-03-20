@@ -7,7 +7,6 @@
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
-<link rel="import" href="../paper-tooltip/paper-tooltip.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../neon-animation/web-animations.html">
 
@@ -119,10 +118,7 @@
               no-label-float="[[noLabelFloat]]"
               data-type="array"></paper-input>
             <template is="dom-if" if="[[index]]">
-              <span>
-                <paper-icon-button class="action-icon" suffix icon="arc:remove-circle-outline" on-tap="_removeArrayValue"></paper-icon-button>
-                <paper-tooltip position="left" offset="1" margin-top="1" animation-delay="300">Remove array value</paper-tooltip>
-              </span>
+              <paper-icon-button class="action-icon" suffix icon="arc:remove-circle-outline" on-tap="_removeArrayValue" title="Remove array value"></paper-icon-button>
             </template>
           </div>
         </template>
