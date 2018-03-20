@@ -42,7 +42,7 @@
     <demo-snippet>
       <dom-bind>
         <template is="dom-bind">
-          <api-property-form-item model='{"schema":{"inputLabel": "Enter value"}, "required": true}' name="requiredModel" value="{{value}}"></api-property-form-item>
+          <api-property-form-item model='{"schema":{"inputLabel": "Enter value"}, "required": true}' required name="requiredModel" value="{{value}}"></api-property-form-item>
           <code>[[value]]</code>
         </template>
       </dom-bind>
@@ -82,7 +82,7 @@
     <demo-snippet>
       <dom-bind>
         <template is="dom-bind">
-          <api-property-form-item model='{"schema":{"inputLabel": "Select fruit", "isEnum": true, "enum": ["apple", "banana", "cherries", "grapes", "lemon", "orange", "pear", "watermelon"]}}' name="enumModel" value="{{value}}"></api-property-form-item>
+          <api-property-form-item model='{"required": true, "schema":{"inputLabel": "Select fruit", "isEnum": true, "enum": ["apple", "banana", "cherries", "grapes", "lemon", "orange", "pear", "watermelon"]}}' name="enumModel" value="{{value}}"></api-property-form-item>
           <code>[[value]]</code>
         </template>
       </dom-bind>
@@ -92,7 +92,7 @@
     <demo-snippet>
       <dom-bind>
         <template is="dom-bind">
-          <api-property-form-item model='{"schema":{"inputLabel": "Select boolean value", "isBool": true}}' name="enumModel" value="{{value}}"></api-property-form-item>
+          <api-property-form-item model='{"required": true,"schema":{"inputLabel": "Select boolean value", "isBool": true}}' name="enumModel" value="{{value}}"></api-property-form-item>
           <code>[[value]]</code>
         </template>
       </dom-bind>
@@ -102,7 +102,7 @@
     <demo-snippet>
       <dom-bind>
         <template is="dom-bind">
-          <api-property-form-item model='{"schema":{"inputLabel": "Enter values", "isArray": true, "inputType": "text", "minLength": 2, "maxLength": 20}}' name="arrayModel" value="{{value}}"></api-property-form-item>
+          <api-property-form-item model='{"required": true,"schema":{"inputLabel": "Enter values", "isArray": true, "inputType": "text", "minLength": 2, "maxLength": 20}}' name="arrayModel" value="{{value}}" is-array></api-property-form-item>
           <code>[[value]]</code>
         </template>
       </dom-bind>
