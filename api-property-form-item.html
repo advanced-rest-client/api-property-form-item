@@ -65,7 +65,7 @@
     </style>
     <div class="content">
       <template is="dom-if" if="[[isEnum]]">
-        <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" data-type="enum" no-label-float="[[noLabelFloat]]">
+        <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" auto-validate data-type="enum" no-label-float="[[noLabelFloat]]">
           <paper-listbox slot="dropdown-content" attr-for-selected="data-value" selected="{{value}}">
             <template is="dom-repeat" items="[[model.schema.enum]]">
               <paper-item data-value$="[[item]]">[[item]]</paper-item>
@@ -74,7 +74,7 @@
         </paper-dropdown-menu>
       </template>
       <template is="dom-if" if="[[isBoolean]]">
-        <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" data-type="boolean" no-label-float="[[noLabelFloat]]">
+        <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" auto-validate data-type="boolean" no-label-float="[[noLabelFloat]]">
           <paper-listbox slot="dropdown-content" attr-for-selected="data-value" selected="{{value}}">
             <paper-item data-value="true">True</paper-item>
             <paper-item data-value="false">False</paper-item>
@@ -245,7 +245,14 @@
         /**
          * When set, prohibits inputs to have floating labels
          */
-        noLabelFloat: Boolean
+        noLabelFloat: Boolean,
+        /**
+         * Set to indicate that the consol is required
+         */
+        required: {
+          type: Boolean,
+          reflectToAttribute: true
+        }
       };
     }
 
@@ -387,10 +394,16 @@
     _getValidity() {
       switch (true) {
         case this.isInput:
-          const input = this.shadowRoot.querySelector('paper-input[data-type="input"]');
-          return input.validate();
+          return this.shadowRoot.querySelector('paper-input[data-type="input"]')
+          .validate();
+        case this.isBoolean:
+          return this.shadowRoot.querySelector('paper-dropdown-menu[data-type="boolean"]')
+          .validate();
+        case this.isEnum:
+          return this.shadowRoot.querySelector('paper-dropdown-menu[data-type="enum"]')
+          .validate();
         case this.isArray:
-          const inputs = this.shadowRoot.querySelectorAll('paper-input[data-type="array"]');
+          let inputs = this.shadowRoot.querySelectorAll('paper-input[data-type="array"]');
           for (let i = 0; i < inputs.length; i++) {
             if (!inputs[i].validate()) {
               return false;
@@ -398,7 +411,7 @@
           }
           return true;
         default:
-          return true;
+          return this.model.required && !!(this.model.value);
       }
     }
   }
