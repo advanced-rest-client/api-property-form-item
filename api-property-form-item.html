@@ -7,7 +7,6 @@
 <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
-<link rel="import" href="../paper-tooltip/paper-tooltip.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../neon-animation/web-animations.html">
 
@@ -34,13 +33,11 @@
 
     .action-icon {
       color: var(--from-row-action-icon-color, var(--icon-button-color, rgba(0, 0, 0, 0.74)));
-      opacity: var(--from-row-action-icon-opacity, 0.54);
       transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
     }
 
     .action-icon:hover {
-      color: var(--from-row-action-icon-color-hover, var(--accent-color, rgba(0, 0, 0, 0.74)));
-      opacity: var(--from-row-action-icon-opacity-hover, 0.74);
+      color: var(--from-row-action-icon-color-hover, var(--accent-color, rgba(0, 0, 0, 0.88)));
     }
 
     .array-item {
@@ -119,10 +116,7 @@
               no-label-float="[[noLabelFloat]]"
               data-type="array"></paper-input>
             <template is="dom-if" if="[[index]]">
-              <span>
-                <paper-icon-button class="action-icon" suffix icon="arc:remove-circle-outline" on-tap="_removeArrayValue"></paper-icon-button>
-                <paper-tooltip position="left" offset="1" margin-top="1" animation-delay="300">Remove array value</paper-tooltip>
-              </span>
+              <paper-icon-button class="action-icon" suffix icon="arc:remove-circle-outline" on-tap="_removeArrayValue" title="Remove array value"></paper-icon-button>
             </template>
           </div>
         </template>
@@ -179,8 +173,7 @@
    * are now read only.
    *
    * @customElement
-   * @group API Elements
-   * @memberof API Elements
+   * @memberof ApiElements
    * @appliesMixin Polymer.IronValidatableBehavior
    * @polymer
    * @demo demo/index.html
@@ -390,18 +383,30 @@
       const index = repeater.indexForElement(e.target);
       this.removeArrayValue(index);
     }
+    /**
+     * Fallback validator if form validator is unavailable.
+     *
+     * @return {Boolean} True if the constrol is valid.
+     */
+    _defaultValidator() {
+      const m = this.model;
+      if (!m) {
+        return true;
+      }
+      return m.required && !!(m.value);
+    }
 
     _getValidity() {
       switch (true) {
         case this.isInput:
-          return this.shadowRoot.querySelector('paper-input[data-type="input"]')
-          .validate();
+          const input = this.shadowRoot.querySelector('paper-input[data-type="input"]');
+          return input ? input.validate() : this._defaultValidator();
         case this.isBoolean:
-          return this.shadowRoot.querySelector('paper-dropdown-menu[data-type="boolean"]')
-          .validate();
+          const bool = this.shadowRoot.querySelector('paper-dropdown-menu[data-type="boolean"]');
+          return bool ? bool.validate() : this._defaultValidator();
         case this.isEnum:
-          return this.shadowRoot.querySelector('paper-dropdown-menu[data-type="enum"]')
-          .validate();
+          const en = this.shadowRoot.querySelector('paper-dropdown-menu[data-type="enum"]');
+          return en ? en.validate() : this._defaultValidator();
         case this.isArray:
           let inputs = this.shadowRoot.querySelectorAll('paper-input[data-type="array"]');
           for (let i = 0; i < inputs.length; i++) {
@@ -411,7 +416,7 @@
           }
           return true;
         default:
-          return this.model.required && !!(this.model.value);
+          return this._defaultValidator();
       }
     }
   }
