@@ -1,5 +1,5 @@
 {
-  "version": "2.0.3",
+  "version": "2.0.4",
   "name": "api-property-form-item",
   "description": "An input to use with forms to render inputs based in ARC view-model",
   "main": "api-property-form-item.html",
@@ -25,14 +25,15 @@
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.0.3",
     "paper-listbox": "PolymerElements/paper-listbox#^2.0.0",
     "paper-item": "PolymerElements/paper-item#^2.1.0",
-    "iron-icon": "PolymerElements/iron-icon#^2.1.0",
-    "web-animations-js": "web-animations/web-animations-js#^2.2"
+    "iron-icon": "PolymerElements/iron-icon#^2.1.0"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
-    "iron-component-page": "PolymerElements/iron-component-page#^3.0.1"
+    "iron-component-page": "PolymerElements/iron-component-page#^3.0.1",
+    "web-animations-js": "web-animations/web-animations-js#^2.2",
+    "arc-polyfills": "advanced-rest-client/arc-polyfills#^0.1.11"
   },
   "resolutions": {
     "polymer": "^2.0.0"
