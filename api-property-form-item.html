@@ -314,7 +314,7 @@
       if (this.__internalChange) {
         return;
       }
-      var v = this.value;
+      const v = this.value;
       if (!v || !isArray) {
         this._setArrayValue(undefined);
         return;
@@ -326,9 +326,10 @@
      * In order to do this simple values has to be transformed into objects.
      *
      * @param {Array<String>} value An array of values.
+     * @return {Array}
      */
     _itemsForArray(value) {
-      var result = [];
+      let result = [];
       if (value instanceof Array) {
         result = value.map(function(item) {
           return {
@@ -344,7 +345,7 @@
     }
     // Handles array value change and sets the `value` property.
     _arrayValueChanged() {
-      var arr = this.arrayValue;
+      let arr = this.arrayValue;
       if (arr) {
         arr = arr.map(function(item) {
           return item.value;
