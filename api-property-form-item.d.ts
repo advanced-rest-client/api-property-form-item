@@ -8,6 +8,17 @@
  *   api-property-form-item.html
  */
 
+/// <reference path="../polymer/types/polymer-element.d.ts" />
+/// <reference path="../iron-validatable-behavior/iron-validatable-behavior.d.ts" />
+/// <reference path="../paper-input/paper-input.d.ts" />
+/// <reference path="../paper-button/paper-button.d.ts" />
+/// <reference path="../iron-icon/iron-icon.d.ts" />
+/// <reference path="../arc-icons/arc-icons.d.ts" />
+/// <reference path="../paper-dropdown-menu/paper-dropdown-menu.d.ts" />
+/// <reference path="../paper-listbox/paper-listbox.d.ts" />
+/// <reference path="../paper-item/paper-item.d.ts" />
+/// <reference path="../paper-icon-button/paper-icon-button.d.ts" />
+
 declare namespace ApiElements {
 
   /**
@@ -107,6 +118,11 @@ declare namespace ApiElements {
     required: boolean|null|undefined;
 
     /**
+     * When set the editor is in read only mode.
+     */
+    readonly: boolean|null|undefined;
+
+    /**
      * Resets UI state variables
      */
     _resetStates(): void;
@@ -134,7 +150,7 @@ declare namespace ApiElements {
      *
      * @param value An array of values.
      */
-    _itemsForArray(value: Array<String|null>|null): any;
+    _itemsForArray(value: Array<String|null>|null): any[]|null;
 
     /**
      * Handles array value change and sets the `value` property.

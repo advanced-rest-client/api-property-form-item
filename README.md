@@ -22,4 +22,4 @@ An input to use with forms to render inputs based in ARC view-model
 
 ### API components
 
-This components is a part of API components ecosystem: https://elements.advancedrestclient.com/
+This components is a part of [API components ecosystem](https://elements.advancedrestclient.com/)

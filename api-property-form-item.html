@@ -65,7 +65,7 @@
     </style>
     <div class="content">
       <template is="dom-if" if="[[isEnum]]">
-        <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" auto-validate data-type="enum" no-label-float="[[noLabelFloat]]">
+        <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" auto-validate data-type="enum" no-label-float="[[noLabelFloat]]" disabled="[[readonly]]">
           <paper-listbox slot="dropdown-content" attr-for-selected="data-value" selected="{{value}}">
             <template is="dom-repeat" items="[[model.schema.enum]]">
               <paper-item data-value$="[[item]]">[[item]]</paper-item>
@@ -74,7 +74,7 @@
         </paper-dropdown-menu>
       </template>
       <template is="dom-if" if="[[isBoolean]]">
-        <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" auto-validate data-type="boolean" no-label-float="[[noLabelFloat]]">
+        <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" auto-validate data-type="boolean" no-label-float="[[noLabelFloat]]" disabled="[[readonly]]">
           <paper-listbox slot="dropdown-content" attr-for-selected="data-value" selected="{{value}}">
             <paper-item data-value="true">True</paper-item>
             <paper-item data-value="false">False</paper-item>
@@ -97,6 +97,7 @@
           always-float-label="[[model.schema.inputFloatLabel]]"
           placeholder="[[model.schema.inputPlaceholder]]"
           no-label-float="[[noLabelFloat]]"
+          readonly="[[readonly]]"
           data-type="input"></paper-input>
       </template>
       <template is="dom-if" if="[[isArray]]">
@@ -117,14 +118,15 @@
               no-label-float
               on-input="_arrayValueChanged"
               no-label-float="[[noLabelFloat]]"
+              readonly="[[readonly]]"
               data-type="array"></paper-input>
             <template is="dom-if" if="[[index]]">
-              <paper-icon-button class="action-icon" suffix icon="arc:remove-circle-outline" on-tap="_removeArrayValue" title="Remove array value"></paper-icon-button>
+              <paper-icon-button class="action-icon" suffix icon="arc:remove-circle-outline" on-tap="_removeArrayValue" title="Remove array value" disabled="[[readonly]]"></paper-icon-button>
             </template>
           </div>
         </template>
         <div class="add-action">
-          <paper-button on-tap="addEmptyArrayValue" title="Add array velue button">
+          <paper-button on-tap="addEmptyArrayValue" title="Add array velue button" disabled="[[readonly]]">
             <iron-icon class="action-icon" icon="arc:add-circle-outline" alt="Add array value icon"></iron-icon>
             Add array value
           </paper-button>
@@ -248,7 +250,11 @@
         required: {
           type: Boolean,
           reflectToAttribute: true
-        }
+        },
+        /**
+         * When set the editor is in read only mode.
+         */
+        readonly: Boolean
       };
     }
 
@@ -314,7 +320,7 @@
       if (this.__internalChange) {
         return;
       }
-      var v = this.value;
+      const v = this.value;
       if (!v || !isArray) {
         this._setArrayValue(undefined);
         return;
@@ -326,9 +332,10 @@
      * In order to do this simple values has to be transformed into objects.
      *
      * @param {Array<String>} value An array of values.
+     * @return {Array}
      */
     _itemsForArray(value) {
-      var result = [];
+      let result = [];
       if (value instanceof Array) {
         result = value.map(function(item) {
           return {
@@ -344,7 +351,7 @@
     }
     // Handles array value change and sets the `value` property.
     _arrayValueChanged() {
-      var arr = this.arrayValue;
+      let arr = this.arrayValue;
       if (arr) {
         arr = arr.map(function(item) {
           return item.value;
