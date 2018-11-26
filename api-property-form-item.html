@@ -8,6 +8,7 @@
 <link rel="import" href="../paper-listbox/paper-listbox.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-checkbox/paper-checkbox.html">
 
 <dom-module id="api-property-form-item">
   <template>
@@ -30,6 +31,11 @@
       border-left: 1px var(--raml-type-form-input-array-border-color, rgba(0, 0, 0, 0.14)) solid;
     }
 
+    :host([is-nillable]:not([is-array])) .content {
+      @apply --layout-horizontal;
+      @apply --layout-center;
+    }
+
     .action-icon {
       color: var(--from-row-action-icon-color, var(--icon-button-color, rgba(0, 0, 0, 0.74)));
       transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
@@ -43,7 +49,8 @@
       @apply --layout-horizontal;
     }
 
-    .array-item paper-input {
+    paper-input,
+    paper-dropdown-menu {
       @apply --layout-flex;
     }
 
@@ -61,6 +68,10 @@
 
     paper-item:hover {
       @apply --paper-item-hover;
+    }
+
+    .nil-option {
+      margin-left: 8px;
     }
     </style>
     <div class="content">
@@ -94,7 +105,7 @@
           max="[[model.schema.maximum]]"
           maxlength="[[model.schema.maxLength]]"
           minlength="[[model.schema.minLength]]"
-          always-float-label="[[model.schema.inputFloatLabel]]"
+          always-float-label="[[_computeAlwaysFloatLabel(model.schema.inputFloatLabel, model.schema.inputType)]]"
           placeholder="[[model.schema.inputPlaceholder]]"
           no-label-float="[[noLabelFloat]]"
           readonly="[[readonly]]"
@@ -131,6 +142,9 @@
             Add array value
           </paper-button>
         </div>
+      </template>
+      <template is="dom-if" if="[[_renderNillable]]">
+        <paper-checkbox class="nil-option" on-checked-changed="_nillableChanged">Nil</paper-checkbox>
       </template>
     </div>
   </template>
@@ -230,6 +244,12 @@
           reflectToAttribute: true,
           readOnly: true
         },
+        // Computed value, True if current item is an union with nill value.
+        isNillable: {
+          type: Boolean,
+          reflectToAttribute: true,
+          readOnly: true
+        },
         // Computed value, True if current item is a boolean value
         isBoolean: {
           type: Boolean,
@@ -254,7 +274,12 @@
         /**
          * When set the editor is in read only mode.
          */
-        readonly: Boolean
+        readonly: Boolean,
+        // Computed value, renders nillable switch when needed.
+        _renderNillable: {
+          type: Boolean,
+          computed: '_computeRenderNillable(isNillable, isArray)'
+        }
       };
     }
 
@@ -272,6 +297,7 @@
       this._setIsInput(false);
       this._setIsArray(false);
       this._setIsBoolean(false);
+      this._setIsNillable(false);
     }
 
     // Sets the template depending on model configuration
@@ -294,6 +320,7 @@
         default:
           this._setIsInput(true);
       }
+      this._setIsNillable(!!schema.isNillable);
     }
     /**
      * Sets `arrayValue` from model's value.
@@ -403,10 +430,12 @@
       if (!m) {
         return true;
       }
-      return m.required && !!(m.value);
+      return !!m.required && !!m.value;
     }
-
     _getValidity() {
+      if (this._nilEnabled) {
+        return true;
+      }
       switch (true) {
         case this.isInput:
           const input = this.shadowRoot.querySelector('paper-input[data-type="input"]');
@@ -428,6 +457,70 @@
         default:
           return this._defaultValidator();
       }
+    }
+    /**
+     * Computes value for `_renderNillable` property.
+     *
+     * @param {Boolean} isNillable
+     * @param {Boolean} isArray
+     * @return {Boolean}
+     */
+    _computeRenderNillable(isNillable, isArray) {
+      return !!isNillable && !isArray;
+    }
+    /**
+     * Controls value and input state when "nil" checkbox's value change.
+     * @param {CustomEvent} e
+     */
+    _nillableChanged(e) {
+      const {value} = e.detail;
+      this._nilEnabled = value;
+      const input = this._getInput();
+      if (input) {
+        input.disabled = value;
+      }
+      if (value) {
+        this._oldNilValue = this.value;
+        this.value = 'nil';
+      } else {
+        if (this._oldNilValue) {
+          this.value = this._oldNilValue;
+          this._oldNilValue = undefined;
+        } else if (this.value === 'nil') {
+          this.value = '';
+        }
+      }
+    }
+    /**
+     * Finds input element in the DOM
+     * @return {Element|undefined} An element that represents the main UI input
+     * element or undefined for array types.
+     */
+    _getInput() {
+      if (this.isEnum) {
+        return this.shadowRoot.querySelector('paper-dropdown-menu[data-type="enum"]');
+      }
+      if (this.isBoolean) {
+        return this.shadowRoot.querySelector('paper-dropdown-menu[data-type="boolean"]');
+      }
+      if (this.isInput) {
+        return this.shadowRoot.querySelector('paper-input[data-type="input"]');
+      }
+    }
+    /**
+     * Computes value for paper-input's always-float-label attribute.
+     * It forces label float for some types of inputs.
+     * @param {Boolean} inputFloatLabel
+     * @param {String} inputType
+     * @return {Boolean}
+     */
+    _computeAlwaysFloatLabel(inputFloatLabel, inputType) {
+      if (inputFloatLabel) {
+        return inputFloatLabel;
+      }
+      return [
+        'date', 'datetime', 'datetime-local', 'month', 'time', 'week', 'file'
+      ].indexOf(inputType) !== -1;
     }
   }
 

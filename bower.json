@@ -1,5 +1,5 @@
 {
-  "version": "2.0.5",
+  "version": "2.0.6",
   "name": "api-property-form-item",
   "description": "An input to use with forms to render inputs based in ARC view-model",
   "main": "api-property-form-item.html",
@@ -22,6 +22,7 @@
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.3",
     "iron-validatable-behavior": "PolymerElements/iron-validatable-behavior#^2.1.0",
     "paper-input": "PolymerElements/paper-input#^2.1.1",
+    "paper-checkbox": "PolymerElements/paper-checkbox#^2.0.0",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.0.3",
     "paper-listbox": "PolymerElements/paper-listbox#^2.0.0",
     "paper-item": "PolymerElements/paper-item#^2.1.0",

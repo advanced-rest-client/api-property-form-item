@@ -1,11 +1,11 @@
 {
   "name": "@api-components/api-property-form-item",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "An input to use with forms to render inputs based in ARC view-model",
   "main": "api-property-form-item.html",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@polymer/gen-typescript-declarations": "^1.1.1"
+    "@polymer/gen-typescript-declarations": "^1.5.1"
   },
   "private": false,
   "scripts": {
