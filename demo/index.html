@@ -5,12 +5,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
   <title>api-property-form-item demo</title>
-  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
-  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-  <link rel="import" href="../../neon-animation/web-animations.html">
-  <link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
-  <link rel="import" href="../../arc-electron-default-theme/arc-electron-default-theme.html">
-  <link rel="import" href="../api-property-form-item.html">
+
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../node_modules/web-animations-js/web-animations-next.min.js"></script>
+
+  <script type="module">
+    import '@polymer/polymer/lib/elements/dom-bind.js';
+    import '@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
+    import '@polymer/iron-demo-helpers/demo-snippet.js';
+    import '@polymer/paper-toggle-button/paper-toggle-button.js';
+    import '@advanced-rest-client/arc-electron-default-theme/arc-electron-default-theme.js';
+    import '../api-property-form-item.js';
+  </script>
+
   <custom-style>
     <style is="custom-style" include="demo-pages-shared-styles">
     body,
@@ -60,7 +67,7 @@
 
       <section class="vertical-section-container centered card">
         <h3>Required input</h3>
-        <api-property-form-item readonly="[[readonly]]" model="[[m3]]" required name="requiredModel" value="{{v3}}"></api-property-form-item>
+        <api-property-form-item readonly="[[readonly]]" model="[[m3]]" required="" name="requiredModel" value="{{v3}}"></api-property-form-item>
         <code>[[v3]]</code>
       </section>
 
@@ -96,7 +103,7 @@
 
       <section class="vertical-section-container centered card">
         <h3>Array value</h3>
-        <api-property-form-item readonly="[[readonly]]" model="[[m9]]" name="arrayModel" value="{{v9}}" is-array></api-property-form-item>
+        <api-property-form-item readonly="[[readonly]]" model="[[m9]]" name="arrayModel" value="{{v9}}" is-array=""></api-property-form-item>
         <code>[[v9]]</code>
       </section>
 
@@ -113,7 +120,7 @@
       </section>
     </template>
   </dom-bind>
-  <script>
+  <script type="module">
   (function(scope) {
     scope.v1 = 'Value';
     scope.m1 = {schema: {inputLabel: 'Enter value'}};

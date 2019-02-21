@@ -5,20 +5,20 @@
  *   https://github.com/Polymer/tools/tree/master/packages/gen-typescript-declarations
  *
  * To modify these typings, edit the source file(s):
- *   api-property-form-item.html
+ *   api-property-form-item.js
  */
 
-/// <reference path="../polymer/types/polymer-element.d.ts" />
-/// <reference path="../iron-validatable-behavior/iron-validatable-behavior.d.ts" />
-/// <reference path="../paper-input/paper-input.d.ts" />
-/// <reference path="../paper-button/paper-button.d.ts" />
-/// <reference path="../iron-icon/iron-icon.d.ts" />
-/// <reference path="../arc-icons/arc-icons.d.ts" />
-/// <reference path="../paper-dropdown-menu/paper-dropdown-menu.d.ts" />
-/// <reference path="../paper-listbox/paper-listbox.d.ts" />
-/// <reference path="../paper-item/paper-item.d.ts" />
-/// <reference path="../paper-icon-button/paper-icon-button.d.ts" />
-/// <reference path="../paper-checkbox/paper-checkbox.d.ts" />
+
+// tslint:disable:variable-name Describing an API that's defined elsewhere.
+// tslint:disable:no-any describes the API as best we are able today
+
+import {PolymerElement} from '@polymer/polymer/polymer-element.js';
+
+import {IronValidatableBehavior} from '@polymer/iron-validatable-behavior/iron-validatable-behavior.js';
+
+import {html} from '@polymer/polymer/lib/utils/html-tag.js';
+
+import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 
 declare namespace ApiElements {
 
@@ -38,7 +38,8 @@ declare namespace ApiElements {
    * ### Example
    *
    * ```html
-   * <api-property-form-item model='{"inputLabel": "Enter value"}' name="propertyName" value="{{value}}"></raml-type-form-input>
+   * <api-property-form-item model='{"inputLabel": "Enter value"}'
+   *  name="propertyName" value="{{value}}"></raml-type-form-input>
    * ```
    *
    * ### Styling
@@ -65,7 +66,7 @@ declare namespace ApiElements {
    * are now read only.
    */
   class ApiPropertyFormItem extends
-    Polymer.IronValidatableBehavior(
+    IronValidatableBehavior(
     Object) {
 
     /**
@@ -222,6 +223,9 @@ declare namespace ApiElements {
   }
 }
 
-interface HTMLElementTagNameMap {
-  "api-property-form-item": ApiElements.ApiPropertyFormItem;
+declare global {
+
+  interface HTMLElementTagNameMap {
+    "api-property-form-item": ApiElements.ApiPropertyFormItem;
+  }
 }

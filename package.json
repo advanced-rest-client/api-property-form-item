@@ -1,25 +1,57 @@
 {
-  "name": "@api-components/api-property-form-item",
-  "version": "2.0.6",
   "description": "An input to use with forms to render inputs based in ARC view-model",
-  "main": "api-property-form-item.html",
+  "keywords": [
+    "web-components",
+    "api",
+    "rest",
+    "form",
+    "arc"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/advanced-rest-client/api-property-form-item.git"
+  },
+  "name": "@api-components/api-property-form-item",
+  "version": "3.0.0-preview.1",
+  "main": "api-property-form-item.js",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@polymer/gen-typescript-declarations": "^1.5.1"
+    "@advanced-rest-client/arc-electron-default-theme": "^3.0.0-preview.1",
+    "@polymer/gen-typescript-declarations": "^1.5.1",
+    "@polymer/iron-component-page": "^4.0.0",
+    "@polymer/iron-demo-helpers": "^3.0.0",
+    "@polymer/paper-toggle-button": "^3.0.0",
+    "@polymer/test-fixture": "^4.0.2",
+    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "sinon": "^7.2.3",
+    "wct-mocha": "^1.0.0",
+    "web-animations-js": "^2.3.1"
   },
-  "private": false,
   "scripts": {
     "lint": "polymer lint api-property-form-item.html",
     "test-sauce": "polymer test --plugin sauce --job-name \"api-property-form-item:local-test\"",
     "test": "polymer test --plugin local",
     "update-types": "gen-typescript-declarations --deleteExisting --outDir ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/advanced-rest-client/api-property-form-item.git"
-  },
   "bugs": {
     "url": "https://github.com/advanced-rest-client/api-property-form-item/issues",
     "email": "arc@mulesoft.com"
+  },
+  "author": "The Advanced REST client authors <arc@mulesoft.com>",
+  "dependencies": {
+    "@advanced-rest-client/arc-icons": "^3.0.0-preview.1",
+    "@polymer/iron-flex-layout": "^3.0.0",
+    "@polymer/iron-icon": "^3.0.0",
+    "@polymer/iron-validatable-behavior": "^3.0.0",
+    "@polymer/paper-button": "^3.0.0",
+    "@polymer/paper-checkbox": "^3.0.0",
+    "@polymer/paper-dropdown-menu": "^3.0.0",
+    "@polymer/paper-icon-button": "^3.0.0",
+    "@polymer/paper-input": "^3.0.0",
+    "@polymer/paper-item": "^3.0.0",
+    "@polymer/paper-listbox": "^3.0.0",
+    "@polymer/polymer": "^3.0.0"
   }
 }
