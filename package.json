@@ -12,7 +12,7 @@
     "url": "git://github.com/advanced-rest-client/api-property-form-item.git"
   },
   "name": "@api-components/api-property-form-item",
-  "version": "3.0.0-preview.1",
+  "version": "3.0.0-preview.2",
   "main": "api-property-form-item.js",
   "license": "Apache-2.0",
   "devDependencies": {
