@@ -16,16 +16,16 @@
   "main": "api-property-form-item.js",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@advanced-rest-client/arc-electron-default-theme": "^3.0.0-preview.1",
+    "@advanced-rest-client/arc-electron-default-theme": "^3.0.0-preview.2",
     "@polymer/gen-typescript-declarations": "^1.5.1",
     "@polymer/iron-component-page": "^4.0.0",
-    "@polymer/iron-demo-helpers": "^3.0.0",
+    "@polymer/iron-demo-helpers": "^3.1.0",
     "@polymer/paper-toggle-button": "^3.0.0",
     "@polymer/test-fixture": "^4.0.2",
-    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "@webcomponents/webcomponentsjs": "^2.2.8",
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
-    "sinon": "^7.2.3",
+    "sinon": "^7.3.1",
     "wct-mocha": "^1.0.0",
     "web-animations-js": "^2.3.1"
   },
@@ -41,7 +41,7 @@
   },
   "author": "The Advanced REST client authors <arc@mulesoft.com>",
   "dependencies": {
-    "@advanced-rest-client/arc-icons": "^3.0.0-preview.1",
+    "@advanced-rest-client/arc-icons": "^3.0.0-preview.2",
     "@polymer/iron-flex-layout": "^3.0.0",
     "@polymer/iron-icon": "^3.0.0",
     "@polymer/iron-validatable-behavior": "^3.0.0",
@@ -49,9 +49,9 @@
     "@polymer/paper-checkbox": "^3.0.0",
     "@polymer/paper-dropdown-menu": "^3.0.0",
     "@polymer/paper-icon-button": "^3.0.0",
-    "@polymer/paper-input": "^3.0.0",
+    "@polymer/paper-input": "^3.0.2",
     "@polymer/paper-item": "^3.0.0",
     "@polymer/paper-listbox": "^3.0.0",
-    "@polymer/polymer": "^3.0.0"
+    "@polymer/polymer": "^3.2.0"
   }
 }
