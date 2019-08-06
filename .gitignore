@@ -1,4 +1,3 @@
-
 # General
 .DS_Store
 .AppleDouble
@@ -56,6 +55,4 @@ $RECYCLE.BIN/
 .nfs*
 
 node_modules
-bower_components
-build
 coverage

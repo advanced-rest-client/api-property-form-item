@@ -1,16 +1,14 @@
-import {PolymerElement} from '../../@polymer/polymer/polymer-element.js';
-import {IronValidatableBehavior} from '../../@polymer/iron-validatable-behavior/iron-validatable-behavior.js';
-import '../../@polymer/paper-input/paper-input.js';
-import '../../@polymer/paper-button/paper-button.js';
-import '../../@polymer/iron-icon/iron-icon.js';
-import '../../@advanced-rest-client/arc-icons/arc-icons.js';
-import '../../@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
-import '../../@polymer/paper-listbox/paper-listbox.js';
-import '../../@polymer/paper-item/paper-item.js';
-import '../../@polymer/paper-icon-button/paper-icon-button.js';
-import '../../@polymer/paper-checkbox/paper-checkbox.js';
-import {html} from '../../@polymer/polymer/lib/utils/html-tag.js';
-import {mixinBehaviors} from '../../@polymer/polymer/lib/legacy/class.js';
+import { html, css, LitElement } from 'lit-element';
+import { ValidatableMixin } from '@anypoint-web-components/validatable-mixin/validatable-mixin.js';
+import '@anypoint-web-components/anypoint-button/anypoint-button.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@advanced-rest-client/arc-icons/arc-icons.js';
+import '@anypoint-web-components/anypoint-listbox/anypoint-listbox.js';
+import '@anypoint-web-components/anypoint-item/anypoint-item.js';
+import '@anypoint-web-components/anypoint-dropdown-menu/anypoint-dropdown-menu.js';
+import '@anypoint-web-components/anypoint-button/anypoint-icon-button.js';
+import '@anypoint-web-components/anypoint-checkbox/anypoint-checkbox.js';
+import '@polymer/paper-input/paper-input.js';
 /**
  * An element that renders a form input to edit API type value.
  *
@@ -48,7 +46,7 @@ import {mixinBehaviors} from '../../@polymer/polymer/lib/legacy/class.js';
  * `--raml-type-form-input-array-border-color` | Border color of the element when it is array type item | `rgba(0, 0, 0, 0.14)`
  *
  * Also, use mixins and variables for `paper-input`, `paper-dropdown-menu`,
- * `paper-listbox`, and `paper-item` to style this element.
+ * `anypoint-listbox`, and `anypoint-item` to style this element.
  *
  * @customElement
  * @memberof ApiElements
@@ -56,31 +54,39 @@ import {mixinBehaviors} from '../../@polymer/polymer/lib/legacy/class.js';
  * @polymer
  * @demo demo/index.html
  */
-class ApiPropertyFormItem extends mixinBehaviors(IronValidatableBehavior, PolymerElement) {
-  static get template() {
-    return html`
-    <style>
-    :host([required]) paper-input {
+class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
+  static get styles() {
+    /* :host([required]) paper-input {
       --paper-input-container-label: {
-        color: var(--api-property-form-item-input-label-color, var(--raml-type-form-input-required-label-color, rgba(0, 0, 0, 0.74)));
+        color: var(--api-property-form-item-input-label-color,
+          var(--raml-type-form-input-required-label-color, rgba(0, 0, 0, 0.74)));
       };
     }
 
     :host([required]) paper-input {
       --paper-input-container-label: {
-        color: var(--api-property-form-item-input-label-required-color, var(--raml-type-form-input-required-label-color-required, rgba(0, 0, 0, 0.72)));
+        color: var(--api-property-form-item-input-label-required-color,
+          var(--raml-type-form-input-required-label-color-required, rgba(0, 0, 0, 0.72)));
         font-weight: 500;
       };
+    } */
+    return css`
+    :host {
+      display: inline-block;
+      position: relative;
+      /* <input> width */
+      min-width: 200px;
     }
 
-    :host([is-array]) .content {
+    :host([isarray]) .content {
       padding-left: 8px;
       border-left: 1px var(--raml-type-form-input-array-border-color, rgba(0, 0, 0, 0.14)) solid;
     }
 
-    :host([is-nillable]:not([is-array])) .content {
-      @apply --layout-horizontal;
-      @apply --layout-center;
+    :host(:not([isarray])) .content {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
     }
 
     .action-icon {
@@ -93,19 +99,16 @@ class ApiPropertyFormItem extends mixinBehaviors(IronValidatableBehavior, Polyme
     }
 
     .array-item {
-      @apply --layout-horizontal;
+      display: flex;
+      flex-direction: row;
     }
 
     paper-input,
-    paper-dropdown-menu {
-      @apply --layout-flex;
+    anypoint-dropdown-menu {
+      flex: 1;
     }
 
-    paper-dropdown-menu {
-      width: 100%;
-    }
-
-    paper-button iron-icon {
+    anypoint-button iron-icon {
       margin-right: 12px;
     }
 
@@ -113,72 +116,147 @@ class ApiPropertyFormItem extends mixinBehaviors(IronValidatableBehavior, Polyme
       @apply --arc-font-caption;
     }
 
-    paper-item:hover {
-      @apply --paper-item-hover;
+    anypoint-item:hover {
+      @apply --anypoint-item-hover;
     }
 
     .nil-option {
       margin-left: 8px;
-    }
-    </style>
-    <div class="content">
-      <template is="dom-if" if="[[isEnum]]">
-        <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" auto-validate="" data-type="enum" no-label-float="[[noLabelFloat]]" disabled="[[readonly]]">
-          <paper-listbox slot="dropdown-content" attr-for-selected="data-value" selected="{{value}}">
-            <template is="dom-repeat" items="[[model.schema.enum]]">
-              <paper-item data-value\$="[[item]]">[[item]]</paper-item>
-            </template>
-          </paper-listbox>
-        </paper-dropdown-menu>
-      </template>
-      <template is="dom-if" if="[[isBoolean]]">
-        <paper-dropdown-menu label="[[model.schema.inputLabel]]" name="[[name]]" required="[[model.required]]" auto-validate="" data-type="boolean" no-label-float="[[noLabelFloat]]" disabled="[[readonly]]">
-          <paper-listbox slot="dropdown-content" attr-for-selected="data-value" selected="{{value}}">
-            <paper-item data-value="true">True</paper-item>
-            <paper-item data-value="false">False</paper-item>
-          </paper-listbox>
-        </paper-dropdown-menu>
-      </template>
-      <template is="dom-if" if="[[isInput]]">
-        <paper-input label="[[model.schema.inputLabel]]" value="{{value}}" required="[[model.required]]" pattern="[[model.schema.pattern]]" name="[[name]]" auto-validate="" type="[[model.schema.inputType]]" min="[[model.schema.minimum]]" max="[[model.schema.maximum]]" maxlength="[[model.schema.maxLength]]" minlength="[[model.schema.minLength]]" always-float-label="[[_computeAlwaysFloatLabel(model.schema.inputFloatLabel, model.schema.inputType)]]" placeholder="[[model.schema.inputPlaceholder]]" no-label-float="[[noLabelFloat]]" readonly="[[readonly]]" data-type="input"></paper-input>
-      </template>
-      <template is="dom-if" if="[[isArray]]">
-        <label hidden\$="[[noLabelFloat]]">[[model.schema.inputLabel]]</label>
-        <template is="dom-repeat" items="[[arrayValue]]" class="array-repeater">
-          <div class="array-item">
-            <paper-input label="Parameter value" value="{{item.value}}"
-              required="[[model.required]]"
-              pattern="[[model.schema.pattern]]"
-              name="[[name]]" auto-validate=""
-              type="[[model.schema.inputType]]" min="[[model.schema.minimum]]"
-              max="[[model.schema.maximum]]" maxlength="[[model.schema.maxLength]]"
-              minlength="[[model.schema.minLength]]" no-label-float=""
-              on-input="_arrayValueChanged" readonly="[[readonly]]" data-type="array"></paper-input>
-            <template is="dom-if" if="[[index]]">
-              <paper-icon-button
-                class="action-icon" suffix=""
-                icon="arc:remove-circle-outline" on-click="_removeArrayValue"
-                title="Remove array value" disabled="[[readonly]]"></paper-icon-button>
-            </template>
-          </div>
-        </template>
-        <div class="add-action">
-          <paper-button on-click="addEmptyArrayValue" title="Add array velue button" disabled="[[readonly]]">
-            <iron-icon class="action-icon" icon="arc:add-circle-outline" alt="Add array value icon"></iron-icon>
-            Add array value
-          </paper-button>
-        </div>
-      </template>
-      <template is="dom-if" if="[[_renderNillable]]">
-        <paper-checkbox class="nil-option" on-checked-changed="_nillableChanged">Nil</paper-checkbox>
-      </template>
-    </div>
-`;
+    }`;
   }
 
-  static get is() {
-    return 'api-property-form-item';
+  _enumTemplate() {
+    const { model, name, noLabelFloat, readonly, value } = this;
+    if (!model) {
+      return;
+    }
+    if (!model.schema) {
+      model.schema = {};
+    }
+    const values = model.schema.enum || [];
+    return html`
+    <anypoint-dropdown-menu name="${name}" ?required="${model.required}" autovalidate data-type="enum" ?nolabelfloat="${noLabelFloat}" ?disabled="${readonly}">
+      <label slot="label">${model.schema.inputLabel}</label>
+      <anypoint-listbox slot="dropdown-content" attrforselected="data-value" .selected="${value}" @selected-changed="${this._listSelectionHandler}">
+        ${values.map((item) => html`<anypoint-item data-value="${item}">${item}</anypoint-item>`)}
+      </anypoint-listbox>
+    </anypoint-dropdown-menu>`;
   }
+
+  _booleanTemplate() {
+    const { model, name, noLabelFloat, readonly, value } = this;
+    if (!model) {
+      return;
+    }
+    if (!model.schema) {
+      model.schema = {};
+    }
+    return html`
+    <anypoint-dropdown-menu name="${name}" ?required="${model.required}" autovalidate data-type="enum" ?nolabelfloat="${noLabelFloat}" ?disabled="${readonly}">
+      <label slot="label">${model.schema.inputLabel}</label>
+      <anypoint-listbox slot="dropdown-content" attrforselected="data-value" .selected="${value}" @selected-changed="${this._listSelectionHandler}">
+        <anypoint-item data-value="true">True</anypoint-item>
+        <anypoint-item data-value="false">False</anypoint-item>
+      </anypoint-listbox>
+    </anypoint-dropdown-menu>`;
+  }
+
+  _inputTemplate() {
+    const { model, name, noLabelFloat, readonly, value } = this;
+    if (!model) {
+      return;
+    }
+    if (!model.schema) {
+      model.schema = {};
+    }
+
+    return html`<paper-input
+      .label="${model.schema.inputLabel}"
+      .value="${value}"
+      ?required="${model.required}"
+      .pattern="${model.schema.pattern}"
+      .name="${name}"
+      auto-validate
+      .type="${model.schema.inputType}"
+      .min="${model.schema.minimum}"
+      .max="${model.schema.maximum}"
+      .maxlength="${model.schema.maxLength}"
+      .minlength="${model.schema.minLength}"
+      ?always-float-label="${this._computeAlwaysFloatLabel(model.schema.inputFloatLabel, model.schema.inputType)}"
+      .placeholder="${model.schema.inputPlaceholder}"
+      ?no-label-float="${noLabelFloat}"
+      ?readonly="${readonly}"
+      data-type="input"
+      @input="${this._inputHandler}"></paper-input>`;
+  }
+
+  _arrayTemplate() {
+    const { model, name, noLabelFloat, readonly, _arrayValue } = this;
+    if (!model) {
+      return;
+    }
+    if (!model.schema) {
+      model.schema = {};
+    }
+
+    const values = _arrayValue || [];
+
+    return html`
+    ${noLabelFloat ? undefined : html`<label>${model.schema.inputLabel}</label>`}
+    ${values.map((item, index) => html`
+    <div class="array-item">
+      <paper-input
+        label="Parameter value"
+        .value="${item.value}"
+        ?required="${model.required}"
+        .pattern="${model.schema.pattern}"
+        .name="${name}"
+        auto-validate
+        .type="${model.schema.inputType}"
+        .min="${model.schema.minimum}"
+        .max="${model.schema.maximum}"
+        .maxlength="${model.schema.maxLength}"
+        .minlength="${model.schema.minLength}"
+        no-label-float
+        ?readonly="${readonly}"
+        data-type="array"
+        data-index="${index}"
+        @input="${this._arrayValueHandler}"></paper-input>
+      ${index ? html`<anypoint-icon-button
+        class="action-icon"
+        @click="${this._removeArrayValue}"
+        title="Remove array value"
+        ?disabled="${this.readonly}">
+        <button>
+          <iron-icon icon="arc:remove-circle-outline"></iron-icon>
+        </button>
+      </anypoint-icon-button>` : undefined}
+    </div>`)}
+    <div class="add-action">
+      <anypoint-button @click="${this.addEmptyArrayValue}" title="Add array velue button" ?disabled="${readonly}">
+        <iron-icon class="action-icon" icon="arc:add-circle-outline" alt="Add array value icon"></iron-icon>
+        Add array value
+      </anypoint-button>
+    </div>
+    `;
+  }
+
+  render() {
+    const { _isEnum, _isBoolean, _isInput, _isArray, _renderNillable } = this;
+    return html`
+    <div class="content">
+      ${_isEnum ? this._enumTemplate() : undefined}
+      ${_isBoolean ? this._booleanTemplate() : undefined}
+      ${_isInput ? this._inputTemplate() : undefined}
+      ${_isArray ? this._arrayTemplate() : undefined}
+
+      ${_renderNillable ? html`<anypoint-checkbox
+        ?disabled="${this.readonly}"
+        class="nil-option"
+        @checked-changed="${this._nillableChanged}">Nil</anypoint-checkbox>` : undefined}
+    </div>`;
+  }
+
   static get properties() {
     return {
       /**
@@ -186,77 +264,44 @@ class ApiPropertyFormItem extends mixinBehaviors(IronValidatableBehavior, Polyme
        *
        * @type {Array<Object>}
        */
-      model: {
-        type: Array,
-        observer: '_modelChanged'
-      },
+      model: { type: Array },
       /**
        * Name of the form item
        */
-      name: {
-        type: String,
-        reflectToAttribute: true
-      },
+      name: { type: String, reflect: true },
       /**
        * Input's value.
        */
-      value: {
-        type: String,
-        notify: true
-      },
+      value: { type: String },
       // Computed value, True if current item is a dropdown with values.
-      isEnum: {
-        type: Boolean,
-        readOnly: true
-      },
+      _isEnum: { type: Boolean },
       // Computed value, True if current item is an regular input
-      isInput: {
-        type: Boolean,
-        value: true,
-        readOnly: true
-      },
+      _isInput: { type: Boolean },
       // Computed value, True if current item is an array object
-      isArray: {
-        type: Boolean,
-        reflectToAttribute: true,
-        readOnly: true
-      },
+      _isArray: { type: Boolean },
       // Computed value, True if current item is an union with nill value.
-      isNillable: {
-        type: Boolean,
-        reflectToAttribute: true,
-        readOnly: true
-      },
-      // Computed value, True if current item is a boolean value
-      isBoolean: {
-        type: Boolean,
-        readOnly: true
-      },
-      // A value of an array item (only if `isArray` is set)
-      arrayValue: {
-        type: Array,
-        readOnly: true
-      },
-      /**
-       * When set, prohibits inputs to have floating labels
-       */
-      noLabelFloat: Boolean,
-      /**
-       * Set to indicate that the consol is required
-       */
-      required: {
+      _isNillable: {
         type: Boolean,
         reflectToAttribute: true
       },
+      // Computed value, True if current item is a boolean value
+      _isBoolean: { type: Boolean },
+      // A value of an array item (only if `isArray` is set)
+      _arrayValue: { type: Array },
+      /**
+       * When set, prohibits inputs to have floating labels
+       */
+      noLabelFloat: { type: Boolean },
+      /**
+       * Set to indicate that the consol is required
+       */
+      required: { type: Boolean, reflect: true },
       /**
        * When set the editor is in read only mode.
        */
-      readonly: Boolean,
+      readonly: { type: Boolean },
       // Computed value, renders nillable switch when needed.
-      _renderNillable: {
-        type: Boolean,
-        computed: '_computeRenderNillable(isNillable, isArray)'
-      }
+      _renderNillable: { type: Boolean }
     };
   }
 
@@ -266,15 +311,88 @@ class ApiPropertyFormItem extends mixinBehaviors(IronValidatableBehavior, Polyme
     ];
   }
 
+  get model() {
+    return this._model;
+  }
+
+  set model(value) {
+    const old = this._model;
+    if (value === old) {
+      return;
+    }
+    this._model = value;
+    this._modelChanged(value);
+  }
+
+  get value() {
+    return this._value;
+  }
+
+  set value(value) {
+    const old = this._value;
+    if (value === old) {
+      return;
+    }
+    this._value = value;
+    this._isArrayChanged(this.isArray, value);
+    this.dispatchEvent(new CustomEvent('value-changed', {
+      detail: {
+        value
+      }
+    }));
+  }
+
+  get _isArray() {
+    return this.__isArray;
+  }
+
+  set _isArray(value) {
+    const old = this.__isArray;
+    if (value === old) {
+      return;
+    }
+    this.__isArray = value;
+    this._renderNillable = this._computeRenderNillable(this._isNillable, value);
+    this._isArrayChanged(value, this.value);
+    if (value) {
+      this.setAttribute('isarray', '');
+    } else {
+      this.removeAttribute('isarray');
+    }
+  }
+
+  get _isNillable() {
+    return this.__isNillable;
+  }
+
+  set _isNillable(value) {
+    const old = this.__isNillable;
+    if (value === old) {
+      return;
+    }
+    this.__isNillable = value;
+    this._renderNillable = this._computeRenderNillable(value, this._isArray);
+    if (value) {
+      this.setAttribute('isnillable', '');
+    } else {
+      this.removeAttribute('isnillable');
+    }
+  }
+
+  constructor() {
+    super();
+    this._isInput = true;
+  }
+
   /**
    * Resets UI state variables
    */
   _resetStates() {
-    this._setIsEnum(false);
-    this._setIsInput(false);
-    this._setIsArray(false);
-    this._setIsBoolean(false);
-    this._setIsNillable(false);
+    this._isEnum = false;
+    this._isInput = false;
+    this._isArray = false;
+    this._isBoolean = false;
+    this._isNillable = false;
   }
 
   // Sets the template depending on model configuration
@@ -286,18 +404,18 @@ class ApiPropertyFormItem extends mixinBehaviors(IronValidatableBehavior, Polyme
     const schema = model.schema;
     switch (true) {
       case schema.isEnum:
-        this._setIsEnum(true);
+        this._isEnum = true;
         break;
       case schema.isArray:
         this._prepareArraySchema(model);
         break;
       case schema.isBool:
-        this._setIsBoolean(true);
+        this._isBoolean = true;
         break;
       default:
-        this._setIsInput(true);
+        this._isInput = true;
     }
-    this._setIsNillable(!!schema.isNillable);
+    this._isNillable = !!schema.isNillable;
   }
   /**
    * Sets `arrayValue` from model's value.
@@ -305,7 +423,7 @@ class ApiPropertyFormItem extends mixinBehaviors(IronValidatableBehavior, Polyme
    * @param {Object} model ARC amf view model.
    */
   _prepareArraySchema(model) {
-    this._setIsArray(true);
+    this._isArray = true;
     let value;
     if (model.value && model.value instanceof Array) {
       value = model.value.map((item) => {
@@ -316,7 +434,7 @@ class ApiPropertyFormItem extends mixinBehaviors(IronValidatableBehavior, Polyme
     } else {
       value = [];
     }
-    this._setArrayValue(value);
+    this._arrayValue = value;
   }
 
   // Sets array values if needed
@@ -326,10 +444,10 @@ class ApiPropertyFormItem extends mixinBehaviors(IronValidatableBehavior, Polyme
     }
     const v = this.value;
     if (!v || !isArray) {
-      this._setArrayValue(undefined);
+      this._arrayValue = undefined;
       return;
     }
-    this._setArrayValue(this._itemsForArray(v));
+    this._arrayValue = this._itemsForArray(v);
   }
   /**
    * The `dom-repeat` requires an object to properly support changes.
@@ -355,14 +473,12 @@ class ApiPropertyFormItem extends mixinBehaviors(IronValidatableBehavior, Polyme
   }
   // Handles array value change and sets the `value` property.
   _arrayValueChanged() {
-    let arr = this.arrayValue;
+    let arr = this._arrayValue;
     if (arr) {
-      arr = arr.map(function(item) {
-        return item.value;
-      });
+      arr = arr.map((item) => item.value);
     }
     this.__internalChange = true;
-    this.set('value', arr);
+    this.value = arr;
     this.__internalChange = false;
   }
   /**
@@ -371,23 +487,21 @@ class ApiPropertyFormItem extends mixinBehaviors(IronValidatableBehavior, Polyme
    * Note that the index may change over time if the user remove any value.
    */
   addEmptyArrayValue() {
-    if (this.arrayValue) {
-      this.push('arrayValue', {
-        value: ''
-      });
-    } else {
-      this.set('arrayValue', [{
-        value: ''
-      }]);
-    }
-    return this.arrayValue.length - 1;
+    const items = this._arrayValue || [];
+    items.push({
+      value: ''
+    });
+    this._arrayValue = [...items];
+    return this._arrayValue.length - 1;
   }
   /**
    * Removes an array value for given index.
    * @param {Number} index A position of the value in the array
    */
   removeArrayValue(index) {
-    this.splice('arrayValue', index, 1);
+    const value = this._arrayValue;
+    value.splice(index, 1);
+    this._arrayValue = [...value];
     this._arrayValueChanged();
   }
 
@@ -412,28 +526,37 @@ class ApiPropertyFormItem extends mixinBehaviors(IronValidatableBehavior, Polyme
     }
     return !!m.value;
   }
+
   _getValidity() {
     if (this._nilEnabled) {
       return true;
     }
     switch (true) {
-      case this.isInput:
-        const input = this.shadowRoot.querySelector('paper-input[data-type="input"]');
-        return input ? input.validate() : this._defaultValidator();
-      case this.isBoolean:
-        const bool = this.shadowRoot.querySelector('paper-dropdown-menu[data-type="boolean"]');
-        return bool ? bool.validate() : this._defaultValidator();
-      case this.isEnum:
-        const en = this.shadowRoot.querySelector('paper-dropdown-menu[data-type="enum"]');
-        return en ? en.validate() : this._defaultValidator();
-      case this.isArray:
-        let inputs = this.shadowRoot.querySelectorAll('paper-input[data-type="array"]');
-        for (let i = 0; i < inputs.length; i++) {
-          if (!inputs[i].validate()) {
-            return false;
-          }
+      case this._isInput:
+        {
+          const input = this.shadowRoot.querySelector('paper-input[data-type="input"]');
+          return input ? input.validate() : this._defaultValidator();
         }
-        return true;
+      case this._isBoolean:
+        {
+          const bool = this.shadowRoot.querySelector('anypoint-dropdown-menu[data-type="boolean"]');
+          return bool ? bool.validate() : this._defaultValidator();
+        }
+      case this._isEnum:
+        {
+          const en = this.shadowRoot.querySelector('anypoint-dropdown-menu[data-type="enum"]');
+          return en ? en.validate() : this._defaultValidator();
+        }
+      case this._isArray:
+        {
+          const inputs = this.shadowRoot.querySelectorAll('paper-input[data-type="array"]');
+          for (let i = 0; i < inputs.length; i++) {
+            if (!inputs[i].validate()) {
+              return false;
+            }
+          }
+          return true;
+        }
       default:
         return this._defaultValidator();
     }
@@ -453,7 +576,7 @@ class ApiPropertyFormItem extends mixinBehaviors(IronValidatableBehavior, Polyme
    * @param {CustomEvent} e
    */
   _nillableChanged(e) {
-    const {value} = e.detail;
+    const { value } = e.detail;
     this._nilEnabled = value;
     const input = this._getInput();
     if (input) {
@@ -477,13 +600,13 @@ class ApiPropertyFormItem extends mixinBehaviors(IronValidatableBehavior, Polyme
    * element or undefined for array types.
    */
   _getInput() {
-    if (this.isEnum) {
-      return this.shadowRoot.querySelector('paper-dropdown-menu[data-type="enum"]');
+    if (this._isEnum) {
+      return this.shadowRoot.querySelector('anypoint-dropdown-menu[data-type="enum"]');
     }
-    if (this.isBoolean) {
-      return this.shadowRoot.querySelector('paper-dropdown-menu[data-type="boolean"]');
+    if (this._isBoolean) {
+      return this.shadowRoot.querySelector('anypoint-dropdown-menu[data-type="boolean"]');
     }
-    if (this.isInput) {
+    if (this._isInput) {
       return this.shadowRoot.querySelector('paper-input[data-type="input"]');
     }
   }
@@ -502,6 +625,29 @@ class ApiPropertyFormItem extends mixinBehaviors(IronValidatableBehavior, Polyme
       'date', 'datetime', 'datetime-local', 'month', 'time', 'week', 'file'
     ].indexOf(inputType) !== -1;
   }
+
+  _listSelectionHandler(e) {
+    if (this._isBoolean) {
+      this.value = e.target.selected === 'true' ? true : false;
+    } else {
+      this.value = e.target.selected;
+    }
+  }
+
+  _inputHandler(e) {
+    this.value = e.target.value;
+  }
+
+  _arrayValueHandler(e) {
+    const index = Number(e.target.dataset.index);
+    if (index !== index) {
+      return;
+    }
+    const value = this._arrayValue;
+    value[index].value = e.target.value;
+    this._arrayValue = [...value];
+    this._arrayValueChanged();
+  }
 }
 
-window.customElements.define(ApiPropertyFormItem.is, ApiPropertyFormItem);
+window.customElements.define('api-property-form-item', ApiPropertyFormItem);
