@@ -8,7 +8,7 @@ import '@anypoint-web-components/anypoint-item/anypoint-item.js';
 import '@anypoint-web-components/anypoint-dropdown-menu/anypoint-dropdown-menu.js';
 import '@anypoint-web-components/anypoint-button/anypoint-icon-button.js';
 import '@anypoint-web-components/anypoint-checkbox/anypoint-checkbox.js';
-import '@polymer/paper-input/paper-input.js';
+import '@anypoint-web-components/anypoint-input/anypoint-input.js';
 /**
  * An element that renders a form input to edit API type value.
  *
@@ -45,7 +45,7 @@ import '@polymer/paper-input/paper-input.js';
  * `--arc-font-caption` | Theme mixin, applied to array values label | `{}`
  * `--raml-type-form-input-array-border-color` | Border color of the element when it is array type item | `rgba(0, 0, 0, 0.14)`
  *
- * Also, use mixins and variables for `paper-input`, `paper-dropdown-menu`,
+ * Also, use mixins and variables for `anypoint-input`, `paper-dropdown-menu`,
  * `anypoint-listbox`, and `anypoint-item` to style this element.
  *
  * @customElement
@@ -56,15 +56,15 @@ import '@polymer/paper-input/paper-input.js';
  */
 class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   static get styles() {
-    /* :host([required]) paper-input {
-      --paper-input-container-label: {
+    /* :host([required]) anypoint-input {
+      --anypoint-input-container-label: {
         color: var(--api-property-form-item-input-label-color,
           var(--raml-type-form-input-required-label-color, rgba(0, 0, 0, 0.74)));
       };
     }
 
-    :host([required]) paper-input {
-      --paper-input-container-label: {
+    :host([required]) anypoint-input {
+      --anypoint-input-container-label: {
         color: var(--api-property-form-item-input-label-required-color,
           var(--raml-type-form-input-required-label-color-required, rgba(0, 0, 0, 0.72)));
         font-weight: 500;
@@ -103,7 +103,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       flex-direction: row;
     }
 
-    paper-input,
+    anypoint-input,
     anypoint-dropdown-menu {
       flex: 1;
     }
@@ -126,7 +126,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _enumTemplate() {
-    const { model, name, noLabelFloat, readonly, value } = this;
+    const { model, name, readonly, value } = this;
     if (!model) {
       return;
     }
@@ -135,7 +135,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
     }
     const values = model.schema.enum || [];
     return html`
-    <anypoint-dropdown-menu name="${name}" ?required="${model.required}" autovalidate data-type="enum" ?nolabelfloat="${noLabelFloat}" ?disabled="${readonly}">
+    <anypoint-dropdown-menu name="${name}" ?required="${model.required}" autovalidate data-type="enum" ?disabled="${readonly}">
       <label slot="label">${model.schema.inputLabel}</label>
       <anypoint-listbox slot="dropdown-content" attrforselected="data-value" .selected="${value}" @selected-changed="${this._listSelectionHandler}">
         ${values.map((item) => html`<anypoint-item data-value="${item}">${item}</anypoint-item>`)}
@@ -144,7 +144,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _booleanTemplate() {
-    const { model, name, noLabelFloat, readonly, value } = this;
+    const { model, name, readonly, value } = this;
     if (!model) {
       return;
     }
@@ -152,7 +152,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       model.schema = {};
     }
     return html`
-    <anypoint-dropdown-menu name="${name}" ?required="${model.required}" autovalidate data-type="enum" ?nolabelfloat="${noLabelFloat}" ?disabled="${readonly}">
+    <anypoint-dropdown-menu name="${name}" ?required="${model.required}" autovalidate data-type="enum" ?disabled="${readonly}">
       <label slot="label">${model.schema.inputLabel}</label>
       <anypoint-listbox slot="dropdown-content" attrforselected="data-value" .selected="${value}" @selected-changed="${this._listSelectionHandler}">
         <anypoint-item data-value="true">True</anypoint-item>
@@ -162,7 +162,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _inputTemplate() {
-    const { model, name, noLabelFloat, readonly, value } = this;
+    const { model, name, readonly, value } = this;
     if (!model) {
       return;
     }
@@ -170,28 +170,27 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       model.schema = {};
     }
 
-    return html`<paper-input
-      .label="${model.schema.inputLabel}"
+    return html`<anypoint-input
       .value="${value}"
       ?required="${model.required}"
       .pattern="${model.schema.pattern}"
       .name="${name}"
-      auto-validate
+      autovalidate
       .type="${model.schema.inputType}"
       .min="${model.schema.minimum}"
       .max="${model.schema.maximum}"
-      .maxlength="${model.schema.maxLength}"
-      .minlength="${model.schema.minLength}"
-      ?always-float-label="${this._computeAlwaysFloatLabel(model.schema.inputFloatLabel, model.schema.inputType)}"
+      .maxLength="${model.schema.maxLength}"
+      .minLength="${model.schema.minLength}"
       .placeholder="${model.schema.inputPlaceholder}"
-      ?no-label-float="${noLabelFloat}"
       ?readonly="${readonly}"
       data-type="input"
-      @input="${this._inputHandler}"></paper-input>`;
+      @input="${this._inputHandler}">
+      <label slot="label">${model.schema.inputLabel}</label>
+      </anypoint-input>`;
   }
 
   _arrayTemplate() {
-    const { model, name, noLabelFloat, readonly, _arrayValue } = this;
+    const { model, name, readonly, _arrayValue } = this;
     if (!model) {
       return;
     }
@@ -200,36 +199,33 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
     }
 
     const values = _arrayValue || [];
-
+    /* label="Parameter value" */
     return html`
-    ${noLabelFloat ? undefined : html`<label>${model.schema.inputLabel}</label>`}
     ${values.map((item, index) => html`
     <div class="array-item">
-      <paper-input
-        label="Parameter value"
+      <anypoint-input
         .value="${item.value}"
         ?required="${model.required}"
         .pattern="${model.schema.pattern}"
         .name="${name}"
-        auto-validate
+        autovalidate
         .type="${model.schema.inputType}"
         .min="${model.schema.minimum}"
         .max="${model.schema.maximum}"
-        .maxlength="${model.schema.maxLength}"
-        .minlength="${model.schema.minLength}"
-        no-label-float
+        .maxLength="${model.schema.maxLength}"
+        .minLength="${model.schema.minLength}"
         ?readonly="${readonly}"
         data-type="array"
         data-index="${index}"
-        @input="${this._arrayValueHandler}"></paper-input>
+        @input="${this._arrayValueHandler}">
+        <label slot="label">${model.schema.inputLabel}</label>
+      </anypoint-input>
       ${index ? html`<anypoint-icon-button
         class="action-icon"
         @click="${this._removeArrayValue}"
         title="Remove array value"
         ?disabled="${this.readonly}">
-        <button>
-          <iron-icon icon="arc:remove-circle-outline"></iron-icon>
-        </button>
+        <iron-icon icon="arc:remove-circle-outline"></iron-icon>
       </anypoint-icon-button>` : undefined}
     </div>`)}
     <div class="add-action">
@@ -288,10 +284,6 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       _isBoolean: { type: Boolean },
       // A value of an array item (only if `isArray` is set)
       _arrayValue: { type: Array },
-      /**
-       * When set, prohibits inputs to have floating labels
-       */
-      noLabelFloat: { type: Boolean },
       /**
        * Set to indicate that the consol is required
        */
@@ -534,7 +526,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
     switch (true) {
       case this._isInput:
         {
-          const input = this.shadowRoot.querySelector('paper-input[data-type="input"]');
+          const input = this.shadowRoot.querySelector('anypoint-input[data-type="input"]');
           return input ? input.validate() : this._defaultValidator();
         }
       case this._isBoolean:
@@ -549,7 +541,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
         }
       case this._isArray:
         {
-          const inputs = this.shadowRoot.querySelectorAll('paper-input[data-type="array"]');
+          const inputs = this.shadowRoot.querySelectorAll('anypoint-input[data-type="array"]');
           for (let i = 0; i < inputs.length; i++) {
             if (!inputs[i].validate()) {
               return false;
@@ -607,11 +599,11 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       return this.shadowRoot.querySelector('anypoint-dropdown-menu[data-type="boolean"]');
     }
     if (this._isInput) {
-      return this.shadowRoot.querySelector('paper-input[data-type="input"]');
+      return this.shadowRoot.querySelector('anypoint-input[data-type="input"]');
     }
   }
   /**
-   * Computes value for paper-input's always-float-label attribute.
+   * Computes value for anypoint-input's always-float-label attribute.
    * It forces label float for some types of inputs.
    * @param {Boolean} inputFloatLabel
    * @param {String} inputType
