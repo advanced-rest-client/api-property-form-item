@@ -5,173 +5,78 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
   <title>api-property-form-item demo</title>
-  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
-  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-  <link rel="import" href="../../neon-animation/web-animations.html">
-  <link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
-  <link rel="import" href="../../arc-electron-default-theme/arc-electron-default-theme.html">
-  <link rel="import" href="../api-property-form-item.html">
-  <custom-style>
-    <style is="custom-style" include="demo-pages-shared-styles">
-    body,
-    html {
-      background-color: #e5e5e5;
-      height: 100vh;
-      margin: 0;
-      padding: 0;
-    }
+  <script src="../node_modules/web-animations-js/web-animations.min.js"></script>
 
-    .card {
-      @apply --shadow-elevation-4dp;
-      padding: 20px;
-      margin-top: 20px;
-      margin-bottom: 20px;
-      box-sizing: border-box;
-      background-color: #fff;
-    }
+  <style>
+  code {
+    display: block;
+    margin: 8px;
+  }
 
-    h3 {
-      @apply --paper-font-title;
-    }
-    </style>
-  </custom-style>
+  body.styled {
+    --anypoint-dropdown-error-color: red;
+  }
+
+  body.styled.dark {
+    --primary-background-color: #424242;
+    --secondary-text-color: #616161;
+
+    --anypoint-dropdown-menu-background-color: #494949;
+    --anypoint-dropdown-menu-label-background-color: var(--primary-background-color);
+    --anypoint-listbox-background-color: #494949;
+    --anypoint-dropdown-menu-focus-background-color: #757575;
+    --anypoint-item-hover-background-color: #757575;
+    --anypoint-dropdown-menu-label-color: #fff;
+    --anypoint-dropdown-menu-info-message-color: #fff;
+
+    --anypoint-input-legacy-label-color: #F5F5F5;
+    --anypoint-checkbox-label-color:  #F5F5F5;
+    --anypoint-input-background-color: rgba(255, 255, 255, 0.04);
+    --anypoint-input-label-color: #fff;
+    --anypoint-input-input-color: #fff;
+    --anypoint-input-border-bottom-color: #fff;
+    --anypoint-input-focused-border-bottom-color: #fff;
+    --anypoint-input-label-background-color: rgb(66, 66, 66);
+    --anypoint-input-legacy-focus-background-color: #3a3b3c;
+    --anypoint-input-legacy-focus-border-color: #178bea;
+    --anypoint-input-info-message-color: #fff;
+
+    --from-row-action-icon-color: #fff;
+  }
+
+  body.styled.material {
+    --secondary-text-color: #616161;
+    --anypoint-item-min-height: 48px;
+    --anypoint-item-focus-color: currentColor;
+    --anypoint-item-focused-color: currentColor;
+    --anypoint-item-before-background: currentColor;
+    --anypoint-item-before-opacity: 0.12;
+    --anypoint-item-border-left-width: 0;
+    --anypoint-item-border-right-width: 0;
+    --anypoint-item-hover-background-color: #F5F5F5;
+    --anypoint-item-pressed-background-color: #BDBDBD;
+    --anypoint-item-secondary-focus-color: var(--secondary-text-color);
+  }
+
+  body.styled.material.dark {
+    --anypoint-item-hover-background-color: #616161;
+    --anypoint-item-pressed-background-color: #757575;
+    --secondary-text-color: #9E9E9E;
+  }
+
+  body.styled.legacy {
+    --from-row-action-icon-color: #fff;
+  }
+
+  api-property-form-item {
+    width: 100%;
+  }
+  </style>
 </head>
 
 <body>
-  <dom-bind id="demo">
-    <template>
-      <section class="vertical-section-container centered card">
-        <h3>Configuration</h3>
-        <paper-toggle-button checked="{{readonly}}">Read only</paper-toggle-button>
-      </section>
-
-      <section class="vertical-section-container centered card">
-        <h3>Text editor</h3>
-        <api-property-form-item readonly="[[readonly]]" model="[[m1]]" name="simpleModel" value="{{v1}}"></api-property-form-item>
-        <code>[[v1]]</code>
-      </section>
-
-      <section class="vertical-section-container centered card">
-        <h3>Text editor with pattern</h3>
-        <p>Pattern: <code>[a-zA-Z0-9_]*</code></p>
-        <api-property-form-item readonly="[[readonly]]" model="[[m2]]" name="patternModel" value="{{v2}}"></api-property-form-item>
-        <code>[[v2]]</code>
-      </section>
-
-      <section class="vertical-section-container centered card">
-        <h3>Required input</h3>
-        <api-property-form-item readonly="[[readonly]]" model="[[m3]]" required name="requiredModel" value="{{v3}}"></api-property-form-item>
-        <code>[[v3]]</code>
-      </section>
-
-      <section class="vertical-section-container centered card">
-        <h3>With placeholder</h3>
-        <api-property-form-item readonly="[[readonly]]" model="[[m4]]" name="placeholderModel" value="{{v4}}"></api-property-form-item>
-        <code>[[v4]]</code>
-      </section>
-
-      <section class="vertical-section-container centered card">
-        <h3>Number editor</h3>
-        <api-property-form-item readonly="[[readonly]]" model="[[m5]]" name="numericModel" value="{{v5}}"></api-property-form-item>
-        <code>[[v5]]</code>
-      </section>
-
-      <section class="vertical-section-container centered card">
-        <h3>Date editor</h3>
-        <api-property-form-item readonly="[[readonly]]" model="[[m6]]" name="dateModel" value="{{v6}}"></api-property-form-item>
-        <code>[[v6]]</code>
-      </section>
-
-      <section class="vertical-section-container centered card">
-        <h3>Enum values</h3>
-        <api-property-form-item readonly="[[readonly]]" model="[[m7]]" name="enumModel" value="{{v7}}"></api-property-form-item>
-        <code>[[v7]]</code>
-      </section>
-
-      <section class="vertical-section-container centered card">
-        <h3>Boolean value</h3>
-        <api-property-form-item readonly="[[readonly]]" model="[[m8]]" name="enumModel" value="{{v8}}"></api-property-form-item>
-        <code>[[v8]]</code>
-      </section>
-
-      <section class="vertical-section-container centered card">
-        <h3>Array value</h3>
-        <api-property-form-item readonly="[[readonly]]" model="[[m9]]" name="arrayModel" value="{{v9}}" is-array></api-property-form-item>
-        <code>[[v9]]</code>
-      </section>
-
-      <section class="vertical-section-container centered card">
-        <h3>Union with nil value</h3>
-        <api-property-form-item model="[[m10]]" name="unionNilModel" value="{{v10}}"></api-property-form-item>
-        <code>[[v10]]</code>
-      </section>
-
-      <section class="vertical-section-container centered card">
-        <h3>Enum with nil value</h3>
-        <api-property-form-item model="[[m11]]" name="unionNilModel" value="{{v11}}"></api-property-form-item>
-        <code>[[v11]]</code>
-      </section>
-    </template>
-  </dom-bind>
-  <script>
-  (function(scope) {
-    scope.v1 = 'Value';
-    scope.m1 = {schema: {inputLabel: 'Enter value'}};
-    scope.m2 = {schema: {inputLabel: 'Enter value', pattern: '[a-zA-Z0-9_]*'}};
-    scope.m3 = {schema: {inputLabel: 'Enter value'}, required: true};
-    scope.m4 = {schema: {
-      inputLabel: 'Enter value',
-      inputPlaceholder: 'This is the placeholder',
-      inputFloatLabel: true
-    }};
-    scope.m5 = {schema: {
-      inputLabel: 'Enter number value',
-      inputType: 'number',
-      minimum: 1,
-      maximum: 100
-    }};
-    scope.m6 = {schema: {inputLabel: 'Select date', inputType: 'date'}};
-    scope.m7 = {
-      required: true,
-      schema: {
-        inputLabel: 'Select fruit',
-        isEnum: true,
-        enum: ['apple', 'banana', 'cherries', 'grapes', 'lemon', 'orange', 'pear', 'watermelon']
-      }
-    };
-    scope.m8 = {required: true, schema: {inputLabel: 'Select boolean value', isBool: true}};
-    scope.m9 = {
-      required: true,
-      schema: {
-        inputLabel: 'Enter values',
-        isArray: true,
-        inputType: 'text',
-        minLength: 2,
-        maxLength: 20
-      }
-    };
-    scope.m10 = {
-      required: true,
-      schema: {
-        type: 'union',
-        inputLabel: 'Value or nil',
-        isNillable: true,
-        inputType: 'text'
-      }
-    };
-
-    scope.m11 = {
-      required: true,
-      schema: {
-        type: 'union',
-        inputLabel: 'Enum or nil',
-        isNillable: true,
-        isEnum: true,
-        inputType: 'text',
-        enum: ['apple', 'banana', 'cherries', 'grapes', 'lemon', 'orange', 'pear', 'watermelon']
-      }
-    };
-  })(document.getElementById('demo'));
-  </script>
+  <div id="demo"></div>
+  <script type="module" src="index.js"></script>
 </body>
+
 </html>
