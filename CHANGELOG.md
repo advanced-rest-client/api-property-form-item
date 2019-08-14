@@ -102,3 +102,12 @@
 
 
 
+# [3.0.0](https://github.com/advanced-rest-client/api-property-form-item/compare/2.0.1...3.0.0) (2019-08-14)
+
+
+### Bug Fixes
+
+* fixing travis configuration ([2afb244](https://github.com/advanced-rest-client/api-property-form-item/commit/2afb244))
+
+
+
