@@ -56,20 +56,6 @@ import '@anypoint-web-components/anypoint-input/anypoint-input.js';
  */
 class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   static get styles() {
-    /* :host([required]) anypoint-input {
-      --anypoint-input-container-label: {
-        color: var(--api-property-form-item-input-label-color,
-          var(--raml-type-form-input-required-label-color, rgba(0, 0, 0, 0.74)));
-      };
-    }
-
-    :host([required]) anypoint-input {
-      --anypoint-input-container-label: {
-        color: var(--api-property-form-item-input-label-required-color,
-          var(--raml-type-form-input-required-label-color-required, rgba(0, 0, 0, 0.72)));
-        font-weight: 500;
-      };
-    } */
     return css`
     :host {
       display: inline-block;
@@ -101,6 +87,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
     .array-item {
       display: flex;
       flex-direction: row;
+      align-items: center;
     }
 
     anypoint-input,
@@ -122,39 +109,55 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
 
     .nil-option {
       margin-left: 8px;
+    }
+
+    .array-label {
+      margin-left: 8px;
     }`;
   }
 
   _enumTemplate() {
-    const { model, name, readonly, value } = this;
-    if (!model) {
-      return;
-    }
-    if (!model.schema) {
-      model.schema = {};
-    }
+    const { model, name, readonly, value, outlined, legacy } = this;
     const values = model.schema.enum || [];
     return html`
-    <anypoint-dropdown-menu name="${name}" ?required="${model.required}" autovalidate data-type="enum" ?disabled="${readonly}">
+    <anypoint-dropdown-menu
+      name="${name}"
+      ?required="${model.required}"
+      autovalidate
+      data-type="enum"
+      ?disabled="${readonly}"
+      ?outlined="${outlined}"
+      ?legacy="${legacy}">
       <label slot="label">${model.schema.inputLabel}</label>
-      <anypoint-listbox slot="dropdown-content" attrforselected="data-value" .selected="${value}" @selected-changed="${this._listSelectionHandler}">
+      <anypoint-listbox
+        slot="dropdown-content"
+        attrforselected="data-value"
+        .selected="${value}"
+        ?legacy="${legacy}"
+        @selected-changed="${this._listSelectionHandler}">
         ${values.map((item) => html`<anypoint-item data-value="${item}">${item}</anypoint-item>`)}
       </anypoint-listbox>
     </anypoint-dropdown-menu>`;
   }
 
   _booleanTemplate() {
-    const { model, name, readonly, value } = this;
-    if (!model) {
-      return;
-    }
-    if (!model.schema) {
-      model.schema = {};
-    }
+    const { model, name, readonly, value, outlined, legacy } = this;
     return html`
-    <anypoint-dropdown-menu name="${name}" ?required="${model.required}" autovalidate data-type="enum" ?disabled="${readonly}">
+    <anypoint-dropdown-menu
+      name="${name}"
+      ?required="${model.required}"
+      autovalidate
+      data-type="boolean"
+      ?disabled="${readonly}"
+      ?outlined="${outlined}"
+      ?legacy="${legacy}">
       <label slot="label">${model.schema.inputLabel}</label>
-      <anypoint-listbox slot="dropdown-content" attrforselected="data-value" .selected="${value}" @selected-changed="${this._listSelectionHandler}">
+      <anypoint-listbox
+        slot="dropdown-content"
+        attrforselected="data-value"
+        .selected="${value}"
+        ?legacy="${legacy}"
+        @selected-changed="${this._listSelectionHandler}">
         <anypoint-item data-value="true">True</anypoint-item>
         <anypoint-item data-value="false">False</anypoint-item>
       </anypoint-listbox>
@@ -162,14 +165,13 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _inputTemplate() {
-    const { model, name, readonly, value } = this;
+    const { model, name, noLabelFloat, readonly, value, outlined, legacy } = this;
     if (!model) {
       return;
     }
     if (!model.schema) {
       model.schema = {};
     }
-
     return html`<anypoint-input
       .value="${value}"
       ?required="${model.required}"
@@ -182,7 +184,10 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       .maxLength="${model.schema.maxLength}"
       .minLength="${model.schema.minLength}"
       .placeholder="${model.schema.inputPlaceholder}"
+      ?nolabelfloat="${noLabelFloat}"
       ?readonly="${readonly}"
+      ?outlined="${outlined}"
+      ?legacy="${legacy}"
       data-type="input"
       @input="${this._inputHandler}">
       <label slot="label">${model.schema.inputLabel}</label>
@@ -190,17 +195,12 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _arrayTemplate() {
-    const { model, name, readonly, _arrayValue } = this;
-    if (!model) {
-      return;
-    }
-    if (!model.schema) {
-      model.schema = {};
-    }
-
+    const { model, name, readonly, _arrayValue, outlined, legacy } = this;
     const values = _arrayValue || [];
-    /* label="Parameter value" */
+    const itemLabel = model.schema.inputLabel || 'Parameter value';
     return html`
+    <label class="array-label">${itemLabel}</label>
+
     ${values.map((item, index) => html`
     <div class="array-item">
       <anypoint-input
@@ -214,14 +214,20 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
         .max="${model.schema.maximum}"
         .maxLength="${model.schema.maxLength}"
         .minLength="${model.schema.minLength}"
+        nolabelfloat
         ?readonly="${readonly}"
+        ?outlined="${outlined}"
+        ?legacy="${legacy}"
         data-type="array"
         data-index="${index}"
         @input="${this._arrayValueHandler}">
-        <label slot="label">${model.schema.inputLabel}</label>
+        <label slot="label">${itemLabel}<label>
       </anypoint-input>
       ${index ? html`<anypoint-icon-button
         class="action-icon"
+        data-index="${index}"
+        ?outlined="${outlined}"
+        ?legacy="${legacy}"
         @click="${this._removeArrayValue}"
         title="Remove array value"
         ?disabled="${this.readonly}">
@@ -229,7 +235,12 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       </anypoint-icon-button>` : undefined}
     </div>`)}
     <div class="add-action">
-      <anypoint-button @click="${this.addEmptyArrayValue}" title="Add array velue button" ?disabled="${readonly}">
+      <anypoint-button
+        @click="${this.addEmptyArrayValue}"
+        title="Add array velue button"
+        ?disabled="${readonly}"
+        ?outlined="${outlined}"
+        ?legacy="${legacy}">
         <iron-icon class="action-icon" icon="arc:add-circle-outline" alt="Add array value icon"></iron-icon>
         Add array value
       </anypoint-button>
@@ -266,6 +277,18 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
        */
       name: { type: String, reflect: true },
       /**
+       * When set, prohibits inputs to have floating labels
+       */
+      noLabelFloat: { type: Boolean },
+      /**
+       * Enables outlined theme.
+       */
+      outlined: { type: Boolean, reflect: true },
+      /**
+       * Enables Anypoint legacy theme.
+       */
+      legacy: { type: Boolean, reflect: true },
+      /**
        * Input's value.
        */
       value: { type: String },
@@ -297,18 +320,13 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
     };
   }
 
-  static get observers() {
-    return [
-      '_isArrayChanged(isArray, value)'
-    ];
-  }
-
   get model() {
     return this._model;
   }
 
   set model(value) {
     const old = this._model;
+    /* istanbul ignore if */
     if (value === old) {
       return;
     }
@@ -322,16 +340,20 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
 
   set value(value) {
     const old = this._value;
+    /* istanbul ignore if */
     if (value === old) {
       return;
     }
     this._value = value;
+    this.requestUpdate('value', old);
     this._isArrayChanged(this.isArray, value);
-    this.dispatchEvent(new CustomEvent('value-changed', {
+    const opts = {
       detail: {
         value
       }
-    }));
+    };
+    this.dispatchEvent(new CustomEvent('changed', opts));
+    this.dispatchEvent(new CustomEvent('value-changed', opts));
   }
 
   get _isArray() {
@@ -340,6 +362,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
 
   set _isArray(value) {
     const old = this.__isArray;
+    /* istanbul ignore if */
     if (value === old) {
       return;
     }
@@ -359,6 +382,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
 
   set _isNillable(value) {
     const old = this.__isNillable;
+    /* istanbul ignore if */
     if (value === old) {
       return;
     }
@@ -499,8 +523,10 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
 
   // Removes item from array value.
   _removeArrayValue(e) {
-    const repeater = this.shadowRoot.querySelector('.array-repeater');
-    const index = repeater.indexForElement(e.target);
+    const index = Number(e.currentTarget.dataset.index);
+    if (index !== index) {
+      return;
+    }
     this.removeArrayValue(index);
   }
   /**
