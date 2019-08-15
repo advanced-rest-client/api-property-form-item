@@ -346,7 +346,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
     }
     this._value = value;
     this.requestUpdate('value', old);
-    this._isArrayChanged(this.isArray, value);
+    this._isArrayChanged(this._isArray, value);
     const opts = {
       detail: {
         value
