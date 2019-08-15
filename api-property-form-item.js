@@ -401,6 +401,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   constructor() {
     super();
     this._isInput = true;
+    this.value = '';
   }
 
   /**
