@@ -344,6 +344,9 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
     if (value === old) {
       return;
     }
+    if (value === undefined || value === null || value === 'undefined') {
+      value = '';
+    }
     this._value = value;
     this.requestUpdate('value', old);
     this._isArrayChanged(this._isArray, value);
