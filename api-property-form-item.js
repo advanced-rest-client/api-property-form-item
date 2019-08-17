@@ -99,14 +99,6 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       margin-right: 12px;
     }
 
-    label {
-      @apply --arc-font-caption;
-    }
-
-    anypoint-item:hover {
-      @apply --anypoint-item-hover;
-    }
-
     .nil-option {
       margin-left: 8px;
     }
