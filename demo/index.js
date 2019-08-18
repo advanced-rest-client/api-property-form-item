@@ -9,7 +9,7 @@ class ComponentDemo extends ArcDemoPage {
   constructor() {
     super();
     this.initObservableProperties([
-      'readonly', 'v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9', 'v10', 'v11',
+      'readOnly', 'v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9', 'v10', 'v11',
       'outlineStyle'
     ]);
     this._componentName = 'api-property-form-item';
@@ -17,7 +17,7 @@ class ComponentDemo extends ArcDemoPage {
     this._valueHandler = this._valueHandler.bind(this);
     this._inputStyleChange = this._inputStyleChange.bind(this);
 
-    this.readonly = false;
+    this.readOnly = false;
     this.v1 = 'Value';
     this.m1 = {schema: {inputLabel: 'Enter value'}};
     this.m2 = {schema: {inputLabel: 'Enter value', pattern: '[a-zA-Z0-9_]*'}};
@@ -90,7 +90,7 @@ class ComponentDemo extends ArcDemoPage {
   }
 
   _readonlyHandler(e) {
-    this.readonly = e.target.checked;
+    this.readOnly = e.target.checked;
   }
 
   _valueHandler(e) {
@@ -114,7 +114,7 @@ class ComponentDemo extends ArcDemoPage {
 
   contentTemplate() {
     const {
-      readonly,
+      readOnly,
       outlineStyle,
       legacyStyle
     } = this;
@@ -136,7 +136,7 @@ class ComponentDemo extends ArcDemoPage {
       <section class="card">
         <h3>Text editor</h3>
         <api-property-form-item
-          .readonly="${readonly}"
+          .readOnly="${readOnly}"
           .model="${this.m1}"
           ?outlined="${outlineStyle}"
           ?legacy="${legacyStyle}"
@@ -150,7 +150,7 @@ class ComponentDemo extends ArcDemoPage {
         <h3>Text editor with pattern</h3>
         <p>Pattern: <code>[a-zA-Z0-9_]*</code></p>
         <api-property-form-item
-          .readonly="${readonly}"
+          .readOnly="${readOnly}"
           .model="${this.m2}"
           ?outlined="${outlineStyle}"
           ?legacy="${legacyStyle}"
@@ -163,7 +163,7 @@ class ComponentDemo extends ArcDemoPage {
       <section class="card">
         <h3>Required input</h3>
         <api-property-form-item
-          .readonly="${readonly}"
+          .readOnly="${readOnly}"
           .model="${this.m3}"
           ?outlined="${outlineStyle}"
           ?legacy="${legacyStyle}"
@@ -177,7 +177,7 @@ class ComponentDemo extends ArcDemoPage {
       <section class="card">
         <h3>With placeholder</h3>
         <api-property-form-item
-          .readonly="${readonly}"
+          .readOnly="${readOnly}"
           .model="${this.m4}"
           ?outlined="${outlineStyle}"
           ?legacy="${legacyStyle}"
@@ -190,7 +190,7 @@ class ComponentDemo extends ArcDemoPage {
       <section class="card">
         <h3>Number editor</h3>
         <api-property-form-item
-          .readonly="${readonly}"
+          .readOnly="${readOnly}"
           .model="${this.m5}"
           ?outlined="${outlineStyle}"
           ?legacy="${legacyStyle}"
@@ -203,7 +203,7 @@ class ComponentDemo extends ArcDemoPage {
       <section class="card">
         <h3>Date editor</h3>
         <api-property-form-item
-          .readonly="${readonly}"
+          .readOnly="${readOnly}"
           .model="${this.m6}"
           ?outlined="${outlineStyle}"
           ?legacy="${legacyStyle}"
@@ -216,7 +216,7 @@ class ComponentDemo extends ArcDemoPage {
       <section class="card">
         <h3>Enum values</h3>
         <api-property-form-item
-          .readonly="${readonly}"
+          .readOnly="${readOnly}"
           .model="${this.m7}"
           ?outlined="${outlineStyle}"
           ?legacy="${legacyStyle}"
@@ -229,7 +229,7 @@ class ComponentDemo extends ArcDemoPage {
       <section class="card">
         <h3>Boolean value</h3>
         <api-property-form-item
-          .readonly="${readonly}"
+          .readOnly="${readOnly}"
           .model="${this.m8}"
           ?outlined="${outlineStyle}"
           ?legacy="${legacyStyle}"
@@ -242,7 +242,7 @@ class ComponentDemo extends ArcDemoPage {
       <section class="card">
         <h3>Array value</h3>
         <api-property-form-item
-          .readonly="${readonly}"
+          .readOnly="${readOnly}"
           .model="${this.m9}"
           ?outlined="${outlineStyle}"
           ?legacy="${legacyStyle}"
@@ -256,7 +256,7 @@ class ComponentDemo extends ArcDemoPage {
       <section class="card">
         <h3>Enum with nil value</h3>
         <api-property-form-item
-          .readonly="${readonly}"
+          .readOnly="${readOnly}"
           .model="${this.m11}"
           ?outlined="${outlineStyle}"
           ?legacy="${legacyStyle}"
@@ -269,7 +269,7 @@ class ComponentDemo extends ArcDemoPage {
       <section class="card">
         <h3>Union with nil value</h3>
         <api-property-form-item
-          .readonly="${readonly}"
+          .readOnly="${readOnly}"
           .model="${this.m10}"
           ?outlined="${outlineStyle}"
           ?legacy="${legacyStyle}"

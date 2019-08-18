@@ -168,7 +168,7 @@ describe('<api-property-form-item>', function() {
     it('is accessible when disabled', async () => {
       const element = await basicFixture();
       element.model = model;
-      element.readonly = true;
+      element.readOnly = true;
       await nextFrame();
       await assert.isAccessible(element);
     });
