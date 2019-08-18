@@ -93,6 +93,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
     anypoint-input,
     anypoint-dropdown-menu {
       flex: 1;
+      width: auto;
     }
 
     anypoint-button iron-icon {
