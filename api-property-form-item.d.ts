@@ -129,7 +129,12 @@ declare namespace ApiElements {
     /**
      * When set the editor is in read only mode.
      */
-    readonly: boolean|null|undefined;
+    readOnly: boolean|null|undefined;
+
+    /**
+     * When set the editor renders form controls disabled.
+     */
+    disabled: boolean|null|undefined;
 
     /**
      * Computed value, renders nillable switch when needed.

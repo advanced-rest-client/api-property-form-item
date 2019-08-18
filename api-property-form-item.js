@@ -110,7 +110,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _enumTemplate() {
-    const { model, name, readOnly, value, outlined, legacy } = this;
+    const { model, name, readOnly, disabled, value, outlined, legacy } = this;
     const values = model.schema.enum || [];
     return html`
     <anypoint-dropdown-menu
@@ -118,7 +118,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       ?required="${model.required}"
       autovalidate
       data-type="enum"
-      ?disabled="${readOnly}"
+      ?disabled="${readOnly || disabled}"
       ?outlined="${outlined}"
       ?legacy="${legacy}">
       <label slot="label">${model.schema.inputLabel}</label>
@@ -134,14 +134,14 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _booleanTemplate() {
-    const { model, name, readOnly, value, outlined, legacy } = this;
+    const { model, name, readOnly, disabled, value, outlined, legacy } = this;
     return html`
     <anypoint-dropdown-menu
       name="${name}"
       ?required="${model.required}"
       autovalidate
       data-type="boolean"
-      ?disabled="${readOnly}"
+      ?disabled="${readOnly || disabled}"
       ?outlined="${outlined}"
       ?legacy="${legacy}">
       <label slot="label">${model.schema.inputLabel}</label>
@@ -158,7 +158,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _inputTemplate() {
-    const { model, name, noLabelFloat, readOnly, value, outlined, legacy } = this;
+    const { model, name, noLabelFloat, readOnly, disabled, value, outlined, legacy } = this;
     if (!model) {
       return;
     }
@@ -179,6 +179,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       .placeholder="${model.schema.inputPlaceholder}"
       ?nolabelfloat="${noLabelFloat}"
       ?readonly="${readOnly}"
+      ?disabled="${disabled}"
       ?outlined="${outlined}"
       ?legacy="${legacy}"
       data-type="input"
@@ -188,7 +189,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _arrayTemplate() {
-    const { model, name, readOnly, _arrayValue, outlined, legacy } = this;
+    const { model, name, readOnly, disabled, _arrayValue, outlined, legacy } = this;
     const values = _arrayValue || [];
     const itemLabel = model.schema.inputLabel || 'Parameter value';
     return html`
@@ -209,6 +210,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
         .minLength="${model.schema.minLength}"
         nolabelfloat
         ?readonly="${readOnly}"
+        ?disabled="${disabled}"
         ?outlined="${outlined}"
         ?legacy="${legacy}"
         data-type="array"
@@ -223,7 +225,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
         ?legacy="${legacy}"
         @click="${this._removeArrayValue}"
         title="Remove array value"
-        ?disabled="${this.readOnly}">
+        ?disabled="${this.readOnly || disabled}">
         <iron-icon icon="arc:remove-circle-outline"></iron-icon>
       </anypoint-icon-button>` : undefined}
     </div>`)}
@@ -231,7 +233,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       <anypoint-button
         @click="${this.addEmptyArrayValue}"
         title="Add array velue button"
-        ?disabled="${readOnly}"
+        ?disabled="${readOnly || disabled}"
         ?outlined="${outlined}"
         ?legacy="${legacy}">
         <iron-icon class="action-icon" icon="arc:add-circle-outline" alt="Add array value icon"></iron-icon>
@@ -242,7 +244,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   render() {
-    const { readOnly, _isEnum, _isBoolean, _isInput, _isArray, _renderNillable } = this;
+    const { readOnly, disabled, _isEnum, _isBoolean, _isInput, _isArray, _renderNillable } = this;
     return html`
     <div class="content">
       ${_isEnum ? this._enumTemplate() : undefined}
@@ -251,7 +253,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       ${_isArray ? this._arrayTemplate() : undefined}
 
       ${_renderNillable ? html`<anypoint-checkbox
-        ?disabled="${readOnly}"
+        ?disabled="${readOnly || disabled}"
         class="nil-option"
         @checked-changed="${this._nillableChanged}">Nil</anypoint-checkbox>` : undefined}
     </div>`;
@@ -308,6 +310,10 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
        * When set the editor is in read only mode.
        */
       readOnly: { type: Boolean },
+      /**
+       * When set the editor renders form controls disabled.
+       */
+      disabled: { type: Boolean },
       // Computed value, renders nillable switch when needed.
       _renderNillable: { type: Boolean }
     };
