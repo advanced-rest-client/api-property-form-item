@@ -156,3 +156,20 @@
 
 
 
+## [3.0.5](https://github.com/advanced-rest-client/api-property-form-item/compare/2.0.1...3.0.5) (2019-08-18)
+
+
+### Bug Fixes
+
+* fixing `_isArray` accessor in value setter ([378c589](https://github.com/advanced-rest-client/api-property-form-item/commit/378c589))
+* fixing input width in flex layout ([b0805d6](https://github.com/advanced-rest-client/api-property-form-item/commit/b0805d6))
+* fixing travis configuration ([2afb244](https://github.com/advanced-rest-client/api-property-form-item/commit/2afb244))
+* removing invalid CSS selectors ([8efde0d](https://github.com/advanced-rest-client/api-property-form-item/commit/8efde0d))
+
+
+### Features
+
+* adding disabled state ([c4a2f02](https://github.com/advanced-rest-client/api-property-form-item/commit/c4a2f02))
+
+
+
