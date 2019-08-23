@@ -135,6 +135,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
 
   _booleanTemplate() {
     const { model, name, readOnly, disabled, value, outlined, legacy } = this;
+    const bindValue = (value === true || value === 'true') ? 'true' : 'false';
     return html`
     <anypoint-dropdown-menu
       name="${name}"
@@ -148,7 +149,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       <anypoint-listbox
         slot="dropdown-content"
         attrforselected="data-value"
-        .selected="${value}"
+        .selected="${bindValue}"
         ?legacy="${legacy}"
         @selected-changed="${this._listSelectionHandler}">
         <anypoint-item data-value="true">True</anypoint-item>
