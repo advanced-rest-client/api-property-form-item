@@ -22,29 +22,6 @@ import '@anypoint-web-components/anypoint-input/anypoint-input.js';
  * `api-view-model-transformer` that transforms AMF `json/ld` API model
  * into data model consumable by ARC UI elements.
  *
- * ### Example
- *
- * ```html
- * <api-property-form-item model='{"inputLabel": "Enter value"}'
- *  name="propertyName" value="{{value}}"></raml-type-form-input>
- * ```
- *
- * ### Styling
- *
- * `<raml-type-form-input>` provides the following custom properties and mixins for styling:
- *
- * Custom property | Description | Default
- * ----------------|-------------|----------
- * `--raml-type-form-input` | Mixin applied to the element | `{}`
- * `--api-property-form-item-input-label-color` | Input's label color | `rgba(0, 0, 0, 0.74)`
- * `--api-property-form-item-input-label-required-color` | Input's label color when required | `rgba(0, 0, 0, 0.74)`
- * `--from-row-action-icon-color` | Theme variable, color of the action icon button | `--icon-button-color` or `rgba(0, 0, 0, 0.74)`
- * `--from-row-action-icon-color-hover` | Theme variable, color of the action icon button when hovered | `--accent-color` or `rgba(0, 0, 0, 0.74)`
- * `--from-row-action-icon-opacity` | Opacity of the action icon button | `0.54`
- * `--from-row-action-icon-opacity` | Opacity of the action icon button when hovered | `0.74`
- * `--arc-font-caption` | Theme mixin, applied to array values label | `{}`
- * `--raml-type-form-input-array-border-color` | Border color of the element when it is array type item | `rgba(0, 0, 0, 0.14)`
- *
  * Also, use mixins and variables for `anypoint-input`, `paper-dropdown-menu`,
  * `anypoint-listbox`, and `anypoint-item` to style this element.
  *
