@@ -87,15 +87,15 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _enumTemplate() {
-    const { model, name, readOnly, disabled, value, outlined, legacy } = this;
+    const { model, name, readOnly, disabled, value, outlined, legacy, _nilEnabled } = this;
     const values = model.schema.enum || [];
     return html`
     <anypoint-dropdown-menu
       name="${name}"
-      ?required="${model.required}"
+      ?required="${!_nilEnabled && model.required}"
       autovalidate
       data-type="enum"
-      ?disabled="${readOnly || disabled}"
+      ?disabled="${readOnly || disabled || _nilEnabled}"
       ?outlined="${outlined}"
       ?legacy="${legacy}">
       <label slot="label">${model.schema.inputLabel}</label>
@@ -111,15 +111,15 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _booleanTemplate() {
-    const { model, name, readOnly, disabled, value, outlined, legacy } = this;
+    const { model, name, readOnly, disabled, value, outlined, legacy, _nilEnabled } = this;
     const bindValue = (value === true || value === 'true') ? 'true' : 'false';
     return html`
     <anypoint-dropdown-menu
       name="${name}"
-      ?required="${model.required}"
+      ?required="${!_nilEnabled && model.required}"
       autovalidate
       data-type="boolean"
-      ?disabled="${readOnly || disabled}"
+      ?disabled="${readOnly || disabled || _nilEnabled}"
       ?outlined="${outlined}"
       ?legacy="${legacy}">
       <label slot="label">${model.schema.inputLabel}</label>
@@ -136,7 +136,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _inputTemplate() {
-    const { model, name, noLabelFloat, readOnly, disabled, value, outlined, legacy } = this;
+    const { model, name, noLabelFloat, readOnly, disabled, value, outlined, legacy, _nilEnabled } = this;
     if (!model) {
       return;
     }
@@ -145,7 +145,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
     }
     return html`<anypoint-input
       .value="${value}"
-      ?required="${model.required}"
+      ?required="${!_nilEnabled && model.required}"
       .pattern="${model.schema.pattern}"
       .name="${name}"
       autovalidate
@@ -157,17 +157,18 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       .placeholder="${model.schema.inputPlaceholder}"
       ?nolabelfloat="${noLabelFloat}"
       ?readonly="${readOnly}"
-      ?disabled="${disabled}"
+      ?disabled="${disabled || _nilEnabled}"
       ?outlined="${outlined}"
       ?legacy="${legacy}"
       data-type="input"
-      @input="${this._inputHandler}">
+      @input="${this._inputHandler}"
+      invalidmessage="${`${name} did not pass validation`}">
       <label slot="label">${model.schema.inputLabel}</label>
       </anypoint-input>`;
   }
 
   _arrayTemplate() {
-    const { model, name, readOnly, disabled, _arrayValue, outlined, legacy } = this;
+    const { model, name, readOnly, disabled, _arrayValue, outlined, legacy, _nilEnabled } = this;
     const values = _arrayValue || [];
     const itemLabel = model.schema.inputLabel || 'Parameter value';
     return html`
@@ -177,7 +178,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
     <div class="array-item">
       <anypoint-input
         .value="${item.value}"
-        ?required="${model.required}"
+        ?required="${!_nilEnabled && model.required}"
         .pattern="${model.schema.pattern}"
         .name="${name}"
         autovalidate
@@ -188,12 +189,13 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
         .minLength="${model.schema.minLength}"
         nolabelfloat
         ?readonly="${readOnly}"
-        ?disabled="${disabled}"
+        ?disabled="${disabled || _nilEnabled}"
         ?outlined="${outlined}"
         ?legacy="${legacy}"
         data-type="array"
         data-index="${index}"
-        @input="${this._arrayValueHandler}">
+        @input="${this._arrayValueHandler}"
+        invalidmessage="${`${name} did not pass validation`}">
         <label slot="label">${itemLabel}<label>
       </anypoint-input>
       ${index ? html`<anypoint-icon-button
@@ -222,7 +224,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   render() {
-    const { readOnly, disabled, _isEnum, _isBoolean, _isInput, _isArray, _renderNillable } = this;
+    const { readOnly, disabled, _isEnum, _isBoolean, _isInput, _isArray, _isNillable } = this;
     return html`
     <div class="content">
       ${_isEnum ? this._enumTemplate() : undefined}
@@ -230,7 +232,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       ${_isInput ? this._inputTemplate() : undefined}
       ${_isArray ? this._arrayTemplate() : undefined}
 
-      ${_renderNillable ? html`<anypoint-checkbox
+      ${_isNillable ? html`<anypoint-checkbox
         ?disabled="${readOnly || disabled}"
         class="nil-option"
         @checked-changed="${this._nillableChanged}">Nil</anypoint-checkbox>` : undefined}
@@ -272,10 +274,8 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       // Computed value, True if current item is an array object
       _isArray: { type: Boolean },
       // Computed value, True if current item is an union with nill value.
-      _isNillable: {
-        type: Boolean,
-        reflectToAttribute: true
-      },
+      _isNillable: { type: Boolean },
+      _nilEnabled: { type: Boolean },
       // Computed value, True if current item is a boolean value
       _isBoolean: { type: Boolean },
       // A value of an array item (only if `isArray` is set)
@@ -291,9 +291,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       /**
        * When set the editor renders form controls disabled.
        */
-      disabled: { type: Boolean },
-      // Computed value, renders nillable switch when needed.
-      _renderNillable: { type: Boolean }
+      disabled: { type: Boolean }
     };
   }
 
@@ -347,7 +345,6 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       return;
     }
     this.__isArray = value;
-    this._renderNillable = this._computeRenderNillable(this._isNillable, value);
     this._isArrayChanged(value, this.value);
     if (value) {
       this.setAttribute('isarray', '');
@@ -367,7 +364,6 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       return;
     }
     this.__isNillable = value;
-    this._renderNillable = this._computeRenderNillable(value, this._isArray);
     if (value) {
       this.setAttribute('isnillable', '');
     } else {
@@ -525,62 +521,64 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
     }
     return !!m.value;
   }
-
+  /**
+   * Returns input(s) depending on model type.
+   * @return {Element|NodeList|undefined} Returns an element for input, enum, and
+   * boolean types. Returns NodeList for array type. Returns undefined when model is not set
+   * or DOM is not ready.
+   */
+  _getInputElement() {
+    if (this._isInput) {
+      return this.shadowRoot.querySelector('anypoint-input[data-type="input"]');
+    }
+    if (this._isBoolean) {
+      return this.shadowRoot.querySelector('anypoint-dropdown-menu[data-type="boolean"]');
+    }
+    if (this._isEnum) {
+      return this.shadowRoot.querySelector('anypoint-dropdown-menu[data-type="enum"]');
+    }
+    if (this._isArray) {
+      return this.shadowRoot.querySelectorAll('anypoint-input[data-type="array"]');
+    }
+  }
+  /**
+   * Overrides `ValidatableMixin._getValidity`.
+   * If the element is set to be `NIL` value it always returns true.
+   * Otherwise it calls `_getInputsValidity()` for input validation result.
+   * @return {Boolean} Validation result
+   */
   _getValidity() {
     if (this._nilEnabled) {
       return true;
     }
-    switch (true) {
-      case this._isInput:
-        {
-          const input = this.shadowRoot.querySelector('anypoint-input[data-type="input"]');
-          return input ? input.validate() : this._defaultValidator();
-        }
-      case this._isBoolean:
-        {
-          const bool = this.shadowRoot.querySelector('anypoint-dropdown-menu[data-type="boolean"]');
-          return bool ? bool.validate() : this._defaultValidator();
-        }
-      case this._isEnum:
-        {
-          const en = this.shadowRoot.querySelector('anypoint-dropdown-menu[data-type="enum"]');
-          return en ? en.validate() : this._defaultValidator();
-        }
-      case this._isArray:
-        {
-          const inputs = this.shadowRoot.querySelectorAll('anypoint-input[data-type="array"]');
-          for (let i = 0; i < inputs.length; i++) {
-            if (!inputs[i].validate()) {
-              return false;
-            }
-          }
-          return true;
-        }
-      default:
-        return this._defaultValidator();
-    }
+    return this._getInputsValidity();
   }
   /**
-   * Computes value for `_renderNillable` property.
-   *
-   * @param {Boolean} isNillable
-   * @param {Boolean} isArray
+   * Validates the inputs and returns validation state.
    * @return {Boolean}
    */
-  _computeRenderNillable(isNillable, isArray) {
-    return !!isNillable && !isArray;
+  _getInputsValidity() {
+    const node = this._getInputElement();
+    if (!node) {
+      return this._defaultValidator();
+    }
+    if (this._isArray) {
+      for (let i = 0; i < node.length; i++) {
+        if (!node[i].validate()) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return node.validate();
   }
   /**
    * Controls value and input state when "nil" checkbox's value change.
    * @param {CustomEvent} e
    */
-  _nillableChanged(e) {
+  async _nillableChanged(e) {
     const { value } = e.detail;
     this._nilEnabled = value;
-    const input = this._getInput();
-    if (input) {
-      input.disabled = value;
-    }
     if (value) {
       this._oldNilValue = this.value;
       this.value = 'nil';
@@ -592,37 +590,8 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
         this.value = '';
       }
     }
-  }
-  /**
-   * Finds input element in the DOM
-   * @return {Element|undefined} An element that represents the main UI input
-   * element or undefined for array types.
-   */
-  _getInput() {
-    if (this._isEnum) {
-      return this.shadowRoot.querySelector('anypoint-dropdown-menu[data-type="enum"]');
-    }
-    if (this._isBoolean) {
-      return this.shadowRoot.querySelector('anypoint-dropdown-menu[data-type="boolean"]');
-    }
-    if (this._isInput) {
-      return this.shadowRoot.querySelector('anypoint-input[data-type="input"]');
-    }
-  }
-  /**
-   * Computes value for anypoint-input's always-float-label attribute.
-   * It forces label float for some types of inputs.
-   * @param {Boolean} inputFloatLabel
-   * @param {String} inputType
-   * @return {Boolean}
-   */
-  _computeAlwaysFloatLabel(inputFloatLabel, inputType) {
-    if (inputFloatLabel) {
-      return inputFloatLabel;
-    }
-    return [
-      'date', 'datetime', 'datetime-local', 'month', 'time', 'week', 'file'
-    ].indexOf(inputType) !== -1;
+    await this.updateComplete;
+    this._getInputsValidity();
   }
 
   _listSelectionHandler(e) {

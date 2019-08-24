@@ -23,55 +23,8 @@ describe('<api-property-form-item>', function() {
     });
   });
 
-  describe('_computeAlwaysFloatLabel()', () => {
-    let element;
-    beforeEach(async () => {
-      element = await basicFixture();
-    });
-
-    it('Returns true when inputFloatLabel is true', () => {
-      const result = element._computeAlwaysFloatLabel(true);
-      assert.isTrue(result);
-    });
-
-    it('Returns true when input type is datae', () => {
-      const result = element._computeAlwaysFloatLabel(false, 'date');
-      assert.isTrue(result);
-    });
-
-    it('Returns true when input type is datetime', () => {
-      const result = element._computeAlwaysFloatLabel(false, 'datetime');
-      assert.isTrue(result);
-    });
-
-    it('Returns true when input type is datetime-local', () => {
-      const result = element._computeAlwaysFloatLabel(false, 'datetime-local');
-      assert.isTrue(result);
-    });
-
-    it('Returns true when input type is month', () => {
-      const result = element._computeAlwaysFloatLabel(false, 'month');
-      assert.isTrue(result);
-    });
-
-    it('Returns true when input type is time', () => {
-      const result = element._computeAlwaysFloatLabel(false, 'time');
-      assert.isTrue(result);
-    });
-
-    it('Returns true when input type is week', () => {
-      const result = element._computeAlwaysFloatLabel(false, 'week');
-      assert.isTrue(result);
-    });
-
-    it('Returns true when input type is file', () => {
-      const result = element._computeAlwaysFloatLabel(false, 'file');
-      assert.isTrue(result);
-    });
-  });
-
-  describe('_getInput()', () => {
-    it('Returns anypoint-input for text types', async () => {
+  describe('_getInputElement()', () => {
+    it('returns anypoint-input for text types', async () => {
       const element = await basicFixture();
       element.model = {
         schema: {
@@ -79,12 +32,12 @@ describe('<api-property-form-item>', function() {
         }
       };
       await nextFrame();
-      const result = element._getInput();
+      const result = element._getInputElement();
       assert.ok(result);
       assert.equal(result.nodeName, 'ANYPOINT-INPUT');
     });
 
-    it('Returns anypoint-dropdown-menu for enum type', async () => {
+    it('returns anypoint-dropdown-menu for enum type', async () => {
       const element = await basicFixture();
       element.model = {
         schema: {
@@ -94,24 +47,39 @@ describe('<api-property-form-item>', function() {
         }
       };
       await nextFrame();
-      const result = element._getInput();
+      const result = element._getInputElement();
       assert.ok(result);
       assert.equal(result.nodeName, 'ANYPOINT-DROPDOWN-MENU');
     });
 
-    it('Returns anypoint-dropdown-menu for boolean type', async () => {
+    it('returns anypoint-dropdown-menu for boolean type', async () => {
       const element = await basicFixture();
       element.model = {
+        value: 'true',
         schema: {
           inputType: 'text',
           isBool: true,
-          value: 'true'
         }
       };
       await nextFrame();
-      const result = element._getInput();
+      const result = element._getInputElement();
       assert.ok(result);
       assert.equal(result.nodeName, 'ANYPOINT-DROPDOWN-MENU');
+    });
+
+    it('returns nodes list for array type', async () => {
+      const element = await basicFixture();
+      element.model = {
+        required: false,
+        name: 'test',
+        value: ['a', 'b'],
+        schema: {
+          isArray: true
+        }
+      };
+      await nextFrame();
+      const result = element._getInputElement();
+      assert.lengthOf(result, 2);
     });
   });
 
@@ -131,9 +99,10 @@ describe('<api-property-form-item>', function() {
       button = element.shadowRoot.querySelector('.nil-option');
     });
 
-    it('Disables the input when nil is enabled', () => {
+    it('disables the input when nil is enabled', async () => {
       MockInteractions.tap(button);
-      const input = element._getInput();
+      await nextFrame();
+      const input = element._getInputElement();
       assert.isTrue(input.disabled);
     });
 
@@ -141,7 +110,8 @@ describe('<api-property-form-item>', function() {
       MockInteractions.tap(button);
       await nextFrame();
       MockInteractions.tap(button);
-      const input = element._getInput();
+      await nextFrame();
+      const input = element._getInputElement();
       assert.isFalse(input.disabled);
     });
 
@@ -187,28 +157,6 @@ describe('<api-property-form-item>', function() {
       await nextFrame();
       MockInteractions.tap(button);
       assert.equal(element.value, '');
-    });
-  });
-
-  describe('_computeRenderNillable()', () => {
-    let element;
-    beforeEach(async () => {
-      element = await basicFixture();
-    });
-
-    it('Returns true when is nillable an not an array', () => {
-      const result = element._computeRenderNillable(true, false);
-      assert.isTrue(result);
-    });
-
-    it('Returns false when is not nillable', () => {
-      const result = element._computeRenderNillable(false, false);
-      assert.isFalse(result);
-    });
-
-    it('Returns false when is is nillable and array', () => {
-      const result = element._computeRenderNillable(true, true);
-      assert.isFalse(result);
     });
   });
 

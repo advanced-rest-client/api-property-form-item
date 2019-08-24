@@ -19,21 +19,21 @@ class ComponentDemo extends ArcDemoPage {
 
     this.readOnly = false;
     this.v1 = 'Value';
-    this.m1 = {schema: {inputLabel: 'Enter value'}};
-    this.m2 = {schema: {inputLabel: 'Enter value', pattern: '[a-zA-Z0-9_]*'}};
-    this.m3 = {schema: {inputLabel: 'Enter value'}, required: true};
-    this.m4 = {schema: {
+    this.m1 = { schema: { inputLabel: 'Enter value' } };
+    this.m2 = { schema: { inputLabel: 'Enter value', pattern: '[a-zA-Z0-9_]*' } };
+    this.m3 = { schema: { inputLabel: 'Enter value' }, required: true };
+    this.m4 = { schema: {
       inputLabel: 'Enter value',
       inputPlaceholder: 'This is the placeholder',
       inputFloatLabel: true
-    }};
-    this.m5 = {schema: {
+    } };
+    this.m5 = { schema: {
       inputLabel: 'Enter number value',
       inputType: 'number',
       minimum: 1,
       maximum: 100
-    }};
-    this.m6 = {schema: {inputLabel: 'Select date', inputType: 'date'}};
+    } };
+    this.m6 = { schema: { inputLabel: 'Select date', inputType: 'date' } };
     this.m7 = {
       required: true,
       schema: {
@@ -42,7 +42,7 @@ class ComponentDemo extends ArcDemoPage {
         enum: ['apple', 'banana', 'cherries', 'grapes', 'lemon', 'orange', 'pear', 'watermelon']
       }
     };
-    this.m8 = {required: true, schema: {inputLabel: 'Select boolean value', isBool: true}};
+    this.m8 = { required: true, schema: { inputLabel: 'Select boolean value', isBool: true } };
     this.m9 = {
       required: true,
       schema: {
@@ -50,7 +50,8 @@ class ComponentDemo extends ArcDemoPage {
         isArray: true,
         inputType: 'text',
         minLength: 2,
-        maxLength: 20
+        maxLength: 20,
+        isNillable: true
       }
     };
     this.m10 = {
