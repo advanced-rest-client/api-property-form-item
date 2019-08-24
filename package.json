@@ -40,9 +40,9 @@
   },
   "devDependencies": {
     "@advanced-rest-client/arc-demo-helper": "^1.0.14",
-    "@advanced-rest-client/eslint-config": "^1.0.8",
+    "@advanced-rest-client/eslint-config": "^1.1.2",
     "@advanced-rest-client/prettier-config": "^0.1.0",
-    "@advanced-rest-client/testing-karma-sl": "^1.0.3",
+    "@advanced-rest-client/testing-karma-sl": "^1.0.4",
     "@anypoint-web-components/anypoint-radio-button": "^0.1.2",
     "@anypoint-web-components/anypoint-styles": "^1.0.0-preview.1",
     "@commitlint/cli": "^8.1.0",
