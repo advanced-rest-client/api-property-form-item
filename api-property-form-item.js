@@ -162,6 +162,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       ?legacy="${legacy}"
       data-type="input"
       @input="${this._inputHandler}"
+      @change="${this._inputChangeHandler}"
       invalidmessage="${`${name} did not pass validation`}">
       <label slot="label">${model.schema.inputLabel}</label>
       </anypoint-input>`;
@@ -603,6 +604,11 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _inputHandler(e) {
+    this.value = e.target.value;
+  }
+
+  _inputChangeHandler(e) {
+    // in FF input event won't fire for number type and when using arrow up/down.
     this.value = e.target.value;
   }
 
