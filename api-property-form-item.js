@@ -163,7 +163,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       data-type="input"
       @input="${this._inputHandler}"
       @change="${this._inputChangeHandler}"
-      invalidmessage="${`${name} did not pass validation`}">
+      invalidmessage="${`${name} is invalid. Check documentation.`}">
       <label slot="label">${model.schema.inputLabel}</label>
       </anypoint-input>`;
   }
@@ -196,7 +196,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
         data-type="array"
         data-index="${index}"
         @input="${this._arrayValueHandler}"
-        invalidmessage="${`${name} did not pass validation`}">
+        invalidmessage="${`${name} is invalid. Check documentation.`}">
         <label slot="label">${itemLabel}<label>
       </anypoint-input>
       ${index ? html`<anypoint-icon-button
