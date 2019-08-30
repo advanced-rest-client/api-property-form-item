@@ -130,10 +130,10 @@ describe('<api-property-form-item>', function() {
       await assert.isAccessible(element);
     });
 
-    it('is accessible when legacy', async () => {
+    it('is accessible when compatibility', async () => {
       const element = await basicFixture();
       element.model = model;
-      element.legacy = true;
+      element.compatibility = true;
       await nextFrame();
       await assert.isAccessible(element);
     });

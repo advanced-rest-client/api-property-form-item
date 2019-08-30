@@ -77,16 +77,16 @@ class ComponentDemo extends ArcDemoPage {
     };
   }
 
-  get legacyStyle() {
-    return this._legacyStyle;
+  get compatibilityStyle() {
+    return this._compatibilityStyle;
   }
 
-  set legacyStyle(value) {
-    this._setObservableProperty('legacyStyle', value);
+  set compatibilityStyle(value) {
+    this._setObservableProperty('compatibilityStyle', value);
     if (value) {
-      document.body.classList.add('legacy');
+      document.body.classList.add('compatibility');
     } else {
-      document.body.classList.remove('legacy');
+      document.body.classList.remove('compatibility');
     }
   }
 
@@ -103,13 +103,13 @@ class ComponentDemo extends ArcDemoPage {
     const { value } = e.detail;
     if (value === 0) {
       this.outlineStyle = false;
-      this.legacyStyle = false;
+      this.compatibilityStyle = false;
     } else if (value === 1) {
       this.outlineStyle = true;
-      this.legacyStyle = false;
+      this.compatibilityStyle = false;
     } else if (value === 2) {
       this.outlineStyle = false;
-      this.legacyStyle = true;
+      this.compatibilityStyle = true;
     }
   }
 
@@ -117,7 +117,7 @@ class ComponentDemo extends ArcDemoPage {
     const {
       readOnly,
       outlineStyle,
-      legacyStyle
+      compatibilityStyle
     } = this;
     return html`
       <div class="demo-container">
@@ -129,7 +129,7 @@ class ComponentDemo extends ArcDemoPage {
           <anypoint-radio-group aria-labelledby="styleLabel" @selected-changed="${this._inputStyleChange}">
             <anypoint-radio-button name="inputStyle" checked>Filled</anypoint-radio-button>
             <anypoint-radio-button name="inputStyle">Outlined</anypoint-radio-button>
-            <anypoint-radio-button name="inputStyle">Legacy</anypoint-radio-button>
+            <anypoint-radio-button name="inputStyle">Compatibility</anypoint-radio-button>
           </anypoint-radio-group>
         </section>
       </div>
@@ -140,7 +140,7 @@ class ComponentDemo extends ArcDemoPage {
           .readOnly="${readOnly}"
           .model="${this.m1}"
           ?outlined="${outlineStyle}"
-          ?legacy="${legacyStyle}"
+          ?compatibility="${compatibilityStyle}"
           name="simpleModel"
           data-target="v1"
           @value-changed="${this._valueHandler}"></api-property-form-item>
@@ -154,7 +154,7 @@ class ComponentDemo extends ArcDemoPage {
           .readOnly="${readOnly}"
           .model="${this.m2}"
           ?outlined="${outlineStyle}"
-          ?legacy="${legacyStyle}"
+          ?compatibility="${compatibilityStyle}"
           name="patternModel"
           data-target="v2"
           @value-changed="${this._valueHandler}"></api-property-form-item>
@@ -167,7 +167,7 @@ class ComponentDemo extends ArcDemoPage {
           .readOnly="${readOnly}"
           .model="${this.m3}"
           ?outlined="${outlineStyle}"
-          ?legacy="${legacyStyle}"
+          ?compatibility="${compatibilityStyle}"
           required
           name="requiredModel"
           data-target="v3"
@@ -181,7 +181,7 @@ class ComponentDemo extends ArcDemoPage {
           .readOnly="${readOnly}"
           .model="${this.m4}"
           ?outlined="${outlineStyle}"
-          ?legacy="${legacyStyle}"
+          ?compatibility="${compatibilityStyle}"
           name="placeholderModel"
           data-target="v4"
           @value-changed="${this._valueHandler}"></api-property-form-item>
@@ -194,7 +194,7 @@ class ComponentDemo extends ArcDemoPage {
           .readOnly="${readOnly}"
           .model="${this.m5}"
           ?outlined="${outlineStyle}"
-          ?legacy="${legacyStyle}"
+          ?compatibility="${compatibilityStyle}"
           name="numericModel"
           data-target="v5"
           @value-changed="${this._valueHandler}"></api-property-form-item>
@@ -207,7 +207,7 @@ class ComponentDemo extends ArcDemoPage {
           .readOnly="${readOnly}"
           .model="${this.m6}"
           ?outlined="${outlineStyle}"
-          ?legacy="${legacyStyle}"
+          ?compatibility="${compatibilityStyle}"
           name="dateModel"
           data-target="v6"
           @value-changed="${this._valueHandler}"></api-property-form-item>
@@ -220,7 +220,7 @@ class ComponentDemo extends ArcDemoPage {
           .readOnly="${readOnly}"
           .model="${this.m7}"
           ?outlined="${outlineStyle}"
-          ?legacy="${legacyStyle}"
+          ?compatibility="${compatibilityStyle}"
           name="enumModel"
           data-target="v7"
           @value-changed="${this._valueHandler}"></api-property-form-item>
@@ -233,7 +233,7 @@ class ComponentDemo extends ArcDemoPage {
           .readOnly="${readOnly}"
           .model="${this.m8}"
           ?outlined="${outlineStyle}"
-          ?legacy="${legacyStyle}"
+          ?compatibility="${compatibilityStyle}"
           name="enumModel"
           data-target="v8"
           @value-changed="${this._valueHandler}"></api-property-form-item>
@@ -246,7 +246,7 @@ class ComponentDemo extends ArcDemoPage {
           .readOnly="${readOnly}"
           .model="${this.m9}"
           ?outlined="${outlineStyle}"
-          ?legacy="${legacyStyle}"
+          ?compatibility="${compatibilityStyle}"
           name="arrayModel"
           data-target="v9"
           @value-changed="${this._valueHandler}"
@@ -260,7 +260,7 @@ class ComponentDemo extends ArcDemoPage {
           .readOnly="${readOnly}"
           .model="${this.m11}"
           ?outlined="${outlineStyle}"
-          ?legacy="${legacyStyle}"
+          ?compatibility="${compatibilityStyle}"
           name="unionNilModel"
           data-target="v11"
           @value-changed="${this._valueHandler}"></api-property-form-item>
@@ -273,7 +273,7 @@ class ComponentDemo extends ArcDemoPage {
           .readOnly="${readOnly}"
           .model="${this.m10}"
           ?outlined="${outlineStyle}"
-          ?legacy="${legacyStyle}"
+          ?compatibility="${compatibilityStyle}"
           name="unionNilModel"
           data-target="v10"
           @value-changed="${this._valueHandler}"></api-property-form-item>

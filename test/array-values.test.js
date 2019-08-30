@@ -144,6 +144,21 @@ describe('<api-property-form-item>', function() {
     });
   });
 
+  describe('compatibility mode', () => {
+    it('sets compatibility on item when setting legacy', async () => {
+      const element = await basicFixture();
+      element.legacy = true;
+      assert.isTrue(element.legacy, 'legacy is set');
+      assert.isTrue(element.compatibility, 'compatibility is set');
+    });
+
+    it('returns compatibility value from item when getting legacy', async () => {
+      const element = await basicFixture();
+      element.compatibility = true;
+      assert.isTrue(element.legacy, 'legacy is set');
+    });
+  });
+
   describe('Array values: a11y', () => {
     let model;
     beforeEach(() => {
@@ -181,10 +196,10 @@ describe('<api-property-form-item>', function() {
       await assert.isAccessible(element);
     });
 
-    it('is accessible when legacy', async () => {
+    it('is accessible when compatibility', async () => {
       const element = await basicFixture();
       element.model = model;
-      element.legacy = true;
+      element.compatibility = true;
       await nextFrame();
       await assert.isAccessible(element);
     });

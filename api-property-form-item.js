@@ -87,7 +87,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _enumTemplate() {
-    const { model, name, readOnly, disabled, value, outlined, legacy, _nilEnabled } = this;
+    const { model, name, readOnly, disabled, value, outlined, compatibility, _nilEnabled } = this;
     const values = model.schema.enum || [];
     return html`
     <anypoint-dropdown-menu
@@ -97,13 +97,13 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       data-type="enum"
       ?disabled="${readOnly || disabled || _nilEnabled}"
       ?outlined="${outlined}"
-      ?legacy="${legacy}">
+      ?compatibility="${compatibility}">
       <label slot="label">${model.schema.inputLabel}</label>
       <anypoint-listbox
         slot="dropdown-content"
         attrforselected="data-value"
         .selected="${value}"
-        ?legacy="${legacy}"
+        ?compatibility="${compatibility}"
         @selected-changed="${this._listSelectionHandler}">
         ${values.map((item) => html`<anypoint-item data-value="${item}">${item}</anypoint-item>`)}
       </anypoint-listbox>
@@ -111,7 +111,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _booleanTemplate() {
-    const { model, name, readOnly, disabled, value, outlined, legacy, _nilEnabled } = this;
+    const { model, name, readOnly, disabled, value, outlined, compatibility, _nilEnabled } = this;
     const bindValue = (value === true || value === 'true') ? 'true' : 'false';
     return html`
     <anypoint-dropdown-menu
@@ -121,13 +121,13 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       data-type="boolean"
       ?disabled="${readOnly || disabled || _nilEnabled}"
       ?outlined="${outlined}"
-      ?legacy="${legacy}">
+      ?compatibility="${compatibility}">
       <label slot="label">${model.schema.inputLabel}</label>
       <anypoint-listbox
         slot="dropdown-content"
         attrforselected="data-value"
         .selected="${bindValue}"
-        ?legacy="${legacy}"
+        ?compatibility="${compatibility}"
         @selected-changed="${this._listSelectionHandler}">
         <anypoint-item data-value="true">True</anypoint-item>
         <anypoint-item data-value="false">False</anypoint-item>
@@ -136,7 +136,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _inputTemplate() {
-    const { model, name, noLabelFloat, readOnly, disabled, value, outlined, legacy, _nilEnabled } = this;
+    const { model, name, noLabelFloat, readOnly, disabled, value, outlined, compatibility, _nilEnabled } = this;
     if (!model) {
       return;
     }
@@ -159,7 +159,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       ?readonly="${readOnly}"
       ?disabled="${disabled || _nilEnabled}"
       ?outlined="${outlined}"
-      ?legacy="${legacy}"
+      ?compatibility="${compatibility}"
       data-type="input"
       @input="${this._inputHandler}"
       @change="${this._inputChangeHandler}"
@@ -169,7 +169,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   }
 
   _arrayTemplate() {
-    const { model, name, readOnly, disabled, _arrayValue, outlined, legacy, _nilEnabled } = this;
+    const { model, name, readOnly, disabled, _arrayValue, outlined, compatibility, _nilEnabled } = this;
     const values = _arrayValue || [];
     const itemLabel = model.schema.inputLabel || 'Parameter value';
     return html`
@@ -192,7 +192,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
         ?readonly="${readOnly}"
         ?disabled="${disabled || _nilEnabled}"
         ?outlined="${outlined}"
-        ?legacy="${legacy}"
+        ?compatibility="${compatibility}"
         data-type="array"
         data-index="${index}"
         @input="${this._arrayValueHandler}"
@@ -203,7 +203,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
         class="action-icon"
         data-index="${index}"
         ?outlined="${outlined}"
-        ?legacy="${legacy}"
+        ?compatibility="${compatibility}"
         @click="${this._removeArrayValue}"
         title="Remove array value"
         ?disabled="${this.readOnly || disabled}">
@@ -216,7 +216,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
         title="Add array velue button"
         ?disabled="${readOnly || disabled}"
         ?outlined="${outlined}"
-        ?legacy="${legacy}">
+        ?compatibility="${compatibility}">
         <iron-icon class="action-icon" icon="arc:add-circle-outline" alt="Add array value icon"></iron-icon>
         Add array value
       </anypoint-button>
@@ -261,9 +261,13 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
        */
       outlined: { type: Boolean, reflect: true },
       /**
-       * Enables Anypoint legacy theme.
+       * Enables compatibility with Anypoint components.
        */
-      legacy: { type: Boolean, reflect: true },
+      compatibility: { type: Boolean, reflect: true },
+      /**
+       * @deprecated Use `compatibility` instead
+       */
+      legacy: { type: Boolean },
       /**
        * Input's value.
        */
@@ -294,6 +298,14 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
        */
       disabled: { type: Boolean }
     };
+  }
+
+  get legacy() {
+    return this.compatibility;
+  }
+
+  set legacy(value) {
+    this.compatibility = value;
   }
 
   get model() {

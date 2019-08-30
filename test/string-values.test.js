@@ -104,11 +104,11 @@ describe('<api-property-form-item>', function() {
       assert.isTrue(input.outlined, 'dropdown has the property');
     });
 
-    it('passes legacy style property', async () => {
-      element.legacy = true;
+    it('passes compatibility style property', async () => {
+      element.compatibility = true;
       await nextFrame();
       const input = element.shadowRoot.querySelector('anypoint-input');
-      assert.isTrue(input.legacy, 'dropdown has the property');
+      assert.isTrue(input.compatibility, 'dropdown has the property');
     });
 
     it('input event passes value to the element', async () => {
@@ -163,10 +163,10 @@ describe('<api-property-form-item>', function() {
       await assert.isAccessible(element);
     });
 
-    it('is accessible when legacy', async () => {
+    it('is accessible when compatibility', async () => {
       const element = await basicFixture();
       element.model = model;
-      element.legacy = true;
+      element.compatibility = true;
       await nextFrame();
       await assert.isAccessible(element);
     });

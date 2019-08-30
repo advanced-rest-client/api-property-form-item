@@ -81,13 +81,13 @@ describe('<api-property-form-item>', function() {
       assert.isTrue(menu.outlined, 'dropdown has the property');
     });
 
-    it('passes legacy style property', async () => {
-      element.legacy = true;
+    it('passes compatibility style property', async () => {
+      element.compatibility = true;
       await nextFrame();
       const menu = element.shadowRoot.querySelector('anypoint-dropdown-menu');
-      assert.isTrue(menu.legacy, 'dropdown has the property');
+      assert.isTrue(menu.compatibility, 'dropdown has the property');
       const listbox = element.shadowRoot.querySelector('anypoint-listbox');
-      assert.isTrue(listbox.legacy, 'listbox has the property');
+      assert.isTrue(listbox.compatibility, 'listbox has the property');
     });
   });
 
