@@ -31,7 +31,7 @@ import '@anypoint-web-components/anypoint-input/anypoint-input.js';
  * @demo demo/index.html
  */
 class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
-  static get styles() {
+  get styles() {
     return css`
     :host {
       display: inline-block;
@@ -225,7 +225,7 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
 
   render() {
     const { readOnly, disabled, _isEnum, _isBoolean, _isInput, _isArray, _isNillable } = this;
-    return html`
+    return html`<style>${this.styles}</style>
     <div class="content">
       ${_isEnum ? this._enumTemplate() : undefined}
       ${_isBoolean ? this._booleanTemplate() : undefined}
