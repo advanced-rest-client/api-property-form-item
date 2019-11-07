@@ -119,7 +119,7 @@ describe('<api-property-form-item>', function() {
     });
 
     it('adds new value on icon click', async () => {
-      const button = element.shadowRoot.querySelector('.add-action iron-icon');
+      const button = element.shadowRoot.querySelector('.add-action .icon');
       MockInteractions.tap(button);
       await nextFrame();
       const nodes = element.shadowRoot.querySelectorAll('.array-item');
