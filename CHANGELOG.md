@@ -231,3 +231,23 @@
 
 
 
+## [3.0.11](https://github.com/advanced-rest-client/api-property-form-item/compare/2.0.1...3.0.11) (2019-11-07)
+
+
+### Bug Fixes
+
+* fixing `_isArray` accessor in value setter ([378c589](https://github.com/advanced-rest-client/api-property-form-item/commit/378c58989b9d30fe334bb6a754f864b5e42eacdc))
+* fixing change in FF for numeric types ([6c9f4ad](https://github.com/advanced-rest-client/api-property-form-item/commit/6c9f4add8f048c19efcd357f6941c40861f76935))
+* fixing input width in flex layout ([b0805d6](https://github.com/advanced-rest-client/api-property-form-item/commit/b0805d6ebb1e22f337440a083bc23cb4e4f56970))
+* fixing selection in boolean selector ([d389916](https://github.com/advanced-rest-client/api-property-form-item/commit/d389916589def8c7910a4cb72c5d241050be118b))
+* fixing travis configuration ([2afb244](https://github.com/advanced-rest-client/api-property-form-item/commit/2afb24413ef188b9ff6ca6c2a6c727b7475246aa))
+* removing invalid CSS selectors ([8efde0d](https://github.com/advanced-rest-client/api-property-form-item/commit/8efde0da1214a4d31010b0640a05cbd55163c047))
+
+
+### Features
+
+* adding disabled state ([c4a2f02](https://github.com/advanced-rest-client/api-property-form-item/commit/c4a2f02cd98816f30d5694caafc4205517ea168d))
+* array is now also nillable ([3a25325](https://github.com/advanced-rest-client/api-property-form-item/commit/3a253254a79ccc35020b02cb8855098d9cb732f2))
+
+
+
