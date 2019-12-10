@@ -57,9 +57,7 @@ declare namespace ApiElements {
    * Also, use mixins and variables for `anypoint-input`, `paper-dropdown-menu`,
    * `anypoint-listbox`, and `anypoint-item` to style this element.
    */
-  class ApiPropertyFormItem extends
-    IronValidatableBehavior(
-    Object) {
+  class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
 
     /**
      * View model generated for this view.

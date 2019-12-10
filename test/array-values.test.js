@@ -5,6 +5,7 @@ import {
   nextFrame
 } from '@open-wc/testing';
 import * as MockInteractions from '@polymer/iron-test-helpers/mock-interactions.js';
+import * as sinon from 'sinon';
 import '../api-property-form-item.js';
 
 describe('<api-property-form-item>', function() {
@@ -202,6 +203,37 @@ describe('<api-property-form-item>', function() {
       element.compatibility = true;
       await nextFrame();
       await assert.isAccessible(element);
+    });
+  });
+
+  describe('input event', () => {
+    let element;
+    let model;
+    beforeEach(async () => {
+      element = await basicFixture();
+      model = {
+        schema: {
+          isArray: true,
+          inputType: 'number',
+          minimum: 2,
+          maximum: 20
+        }
+      };
+      element.model = model;
+      await nextFrame();
+    });
+
+    it('dispatches retargeted input event', async () => {
+      const inputValue = 'test-input';
+      element.addEmptyArrayValue();
+      await nextFrame();
+      const node = element.shadowRoot.querySelector('.array-item anypoint-input');
+      node.value = inputValue;
+      const spy = sinon.spy();
+      element.addEventListener('input', spy);
+      node.dispatchEvent(new CustomEvent('input'));
+      assert.isTrue(spy.called, 'event is dispatched');
+      assert.equal(spy.args[0][0].target.value, inputValue, 'target has value');
     });
   });
 });

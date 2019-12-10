@@ -26,9 +26,9 @@ import '@anypoint-web-components/anypoint-input/anypoint-input.js';
  *
  * @customElement
  * @memberof ApiElements
- * @appliesMixin IronValidatableBehavior
- * @polymer
+ * @appliesMixin ValidatableMixin
  * @demo demo/index.html
+ * @extends LitElement
  */
 class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   get styles() {
@@ -94,14 +94,16 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       data-type="enum"
       ?disabled="${readOnly || disabled || _nilEnabled}"
       ?outlined="${outlined}"
-      ?compatibility="${compatibility}">
+      ?compatibility="${compatibility}"
+    >
       <label slot="label">${model.schema.inputLabel}</label>
       <anypoint-listbox
         slot="dropdown-content"
         attrforselected="data-value"
         .selected="${value}"
         ?compatibility="${compatibility}"
-        @selected-changed="${this._listSelectionHandler}">
+        @selected-changed="${this._listSelectionHandler}"
+      >
         ${values.map((item) => html`<anypoint-item data-value="${item}">${item}</anypoint-item>`)}
       </anypoint-listbox>
     </anypoint-dropdown-menu>`;
@@ -118,14 +120,16 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       data-type="boolean"
       ?disabled="${readOnly || disabled || _nilEnabled}"
       ?outlined="${outlined}"
-      ?compatibility="${compatibility}">
+      ?compatibility="${compatibility}"
+    >
       <label slot="label">${model.schema.inputLabel}</label>
       <anypoint-listbox
         slot="dropdown-content"
         attrforselected="data-value"
         .selected="${bindValue}"
         ?compatibility="${compatibility}"
-        @selected-changed="${this._listSelectionHandler}">
+        @selected-changed="${this._listSelectionHandler}"
+      >
         <anypoint-item data-value="true">True</anypoint-item>
         <anypoint-item data-value="false">False</anypoint-item>
       </anypoint-listbox>
@@ -160,9 +164,10 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
       data-type="input"
       @input="${this._inputHandler}"
       @change="${this._inputChangeHandler}"
-      invalidmessage="${`${name} is invalid. Check documentation.`}">
+      invalidmessage="${`${name} is invalid. Check documentation.`}"
+    >
       <label slot="label">${model.schema.inputLabel}</label>
-      </anypoint-input>`;
+    </anypoint-input>`;
   }
 
   _arrayTemplate() {
@@ -193,7 +198,8 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
         data-type="array"
         data-index="${index}"
         @input="${this._arrayValueHandler}"
-        invalidmessage="${`${name} is invalid. Check documentation.`}">
+        invalidmessage="${`${name} is invalid. Check documentation.`}"
+      >
         <label slot="label">${itemLabel}<label>
       </anypoint-input>
       ${index ? html`<anypoint-icon-button
@@ -612,15 +618,20 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
     } else {
       this.value = e.target.selected;
     }
+    this._notifyInput();
   }
 
   _inputHandler(e) {
     this.value = e.target.value;
+    this._notifyInput();
   }
 
   _inputChangeHandler(e) {
     // in FF input event won't fire for number type and when using arrow up/down.
-    this.value = e.target.value;
+    if (e.target.type === 'number') {
+      this.value = e.target.value;
+      this._notifyInput();
+    }
   }
 
   _arrayValueHandler(e) {
@@ -632,6 +643,11 @@ class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
     value[index].value = e.target.value;
     this._arrayValue = [...value];
     this._arrayValueChanged();
+    this._notifyInput();
+  }
+
+  _notifyInput() {
+    this.dispatchEvent(new CustomEvent('input'));
   }
 }
 

@@ -5,6 +5,7 @@ import {
   nextFrame
 } from '@open-wc/testing';
 import * as MockInteractions from '@polymer/iron-test-helpers/mock-interactions.js';
+import * as sinon from 'sinon';
 import '../api-property-form-item.js';
 
 describe('<api-property-form-item>', function() {
@@ -131,6 +132,31 @@ describe('<api-property-form-item>', function() {
       element.legacy = true;
       await nextFrame();
       await assert.isAccessible(element);
+    });
+  });
+
+  describe('input event', () => {
+    let element;
+    let model;
+    beforeEach(async () => {
+      element = await basicFixture();
+      model = {
+        schema: {
+          inputType: 'string',
+          isBool: true
+        }
+      };
+      element.model = model;
+      await nextFrame();
+    });
+
+    it('dispatches input event on boolean selection', async () => {
+      const spy = sinon.spy();
+      element.addEventListener('input', spy);
+      const item = element.shadowRoot.querySelector('anypoint-item[data-value="true"]');
+      MockInteractions.tap(item);
+      assert.isTrue(spy.called, 'event is dispatched');
+      assert.equal(spy.args[0][0].target.value, true, 'target has value');
     });
   });
 });

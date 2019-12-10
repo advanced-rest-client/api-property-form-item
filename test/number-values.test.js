@@ -4,6 +4,7 @@ import {
   html,
   nextFrame
 } from '@open-wc/testing';
+import * as sinon from 'sinon';
 import '../api-property-form-item.js';
 
 describe('<api-property-form-item>', function() {
@@ -136,6 +137,47 @@ describe('<api-property-form-item>', function() {
       element.compatibility = true;
       await nextFrame();
       await assert.isAccessible(element);
+    });
+  });
+
+  describe('input event', () => {
+    let element;
+    let model;
+    beforeEach(async () => {
+      element = await basicFixture();
+      model = {
+        schema: {
+          inputType: 'number',
+          minimum: 10,
+          maximum: 100
+        }
+      };
+      element.model = model;
+      await nextFrame();
+    });
+
+    it('dispatches retargeted input event', async () => {
+      const inputValue = 15;
+      await nextFrame();
+      const node = element.shadowRoot.querySelector('anypoint-input');
+      node.value = inputValue;
+      const spy = sinon.spy();
+      element.addEventListener('input', spy);
+      node.dispatchEvent(new CustomEvent('input'));
+      assert.isTrue(spy.called, 'event is dispatched');
+      assert.equal(spy.args[0][0].target.value, inputValue, 'target has value');
+    });
+
+    it('dispatches input event on change', async () => {
+      const inputValue = 15;
+      await nextFrame();
+      const node = element.shadowRoot.querySelector('anypoint-input');
+      node.value = inputValue;
+      const spy = sinon.spy();
+      element.addEventListener('input', spy);
+      node.dispatchEvent(new CustomEvent('change'));
+      assert.isTrue(spy.called, 'event is dispatched');
+      assert.equal(spy.args[0][0].target.value, inputValue, 'target has value');
     });
   });
 });
