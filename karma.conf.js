@@ -7,12 +7,6 @@ module.exports = (config) => {
     merge(createDefaultConfig(config), {
       files: [
         {
-          pattern: require.resolve('chai/chai.js')
-        },
-        {
-          pattern: require.resolve('axe-core/axe.min.js')
-        },
-        {
           pattern: config.grep ? config.grep : 'test/**/*.test.js',
           type: 'module'
         }
