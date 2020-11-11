@@ -36,7 +36,7 @@ export class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   /**
    * View model generated for this view.
    */
-  model: ModelItem[];
+  model: ModelItem;
   /**
    * Name of the form item
    * @attribute
