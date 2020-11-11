@@ -50,7 +50,7 @@ describe('<api-property-form-item>', function() {
       assert.typeOf(element._arrayValue, 'array');
     });
 
-    it('Dropdowns are not rendered', function() {
+    it('Drop downs are not rendered', function() {
       const node = element.shadowRoot.querySelector('anypoint-dropdown-menu');
       assert.notOk(node);
     });
@@ -145,21 +145,6 @@ describe('<api-property-form-item>', function() {
     });
   });
 
-  describe('compatibility mode', () => {
-    it('sets compatibility on item when setting legacy', async () => {
-      const element = await basicFixture();
-      element.legacy = true;
-      assert.isTrue(element.legacy, 'legacy is set');
-      assert.isTrue(element.compatibility, 'compatibility is set');
-    });
-
-    it('returns compatibility value from item when getting legacy', async () => {
-      const element = await basicFixture();
-      element.compatibility = true;
-      assert.isTrue(element.legacy, 'legacy is set');
-    });
-  });
-
   describe('Array values: a11y', () => {
     let model;
     beforeEach(() => {
@@ -178,7 +163,9 @@ describe('<api-property-form-item>', function() {
       const element = await basicFixture();
       element.model = model;
       await nextFrame();
-      await assert.isAccessible(element);
+      await assert.isAccessible(element, {
+        ignoredRules: ['color-contrast'],
+      });
     });
 
     it('is accessible when disabled', async () => {
@@ -186,7 +173,9 @@ describe('<api-property-form-item>', function() {
       element.model = model;
       element.readOnly = true;
       await nextFrame();
-      await assert.isAccessible(element);
+      await assert.isAccessible(element, {
+        ignoredRules: ['color-contrast'],
+      });
     });
 
     it('is accessible when outlined', async () => {
@@ -194,7 +183,9 @@ describe('<api-property-form-item>', function() {
       element.model = model;
       element.outlined = true;
       await nextFrame();
-      await assert.isAccessible(element);
+      await assert.isAccessible(element, {
+        ignoredRules: ['color-contrast'],
+      });
     });
 
     it('is accessible when compatibility', async () => {
@@ -202,7 +193,9 @@ describe('<api-property-form-item>', function() {
       element.model = model;
       element.compatibility = true;
       await nextFrame();
-      await assert.isAccessible(element);
+      await assert.isAccessible(element, {
+        ignoredRules: ['color-contrast'],
+      });
     });
   });
 

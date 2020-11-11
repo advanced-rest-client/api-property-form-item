@@ -111,7 +111,9 @@ describe('<api-property-form-item>', function() {
       const element = await basicFixture();
       element.model = model;
       await nextFrame();
-      await assert.isAccessible(element);
+      await assert.isAccessible(element, {
+        ignoredRules: ['color-contrast'],
+      });
     });
 
     it('is accessible when disabled', async () => {
@@ -119,7 +121,9 @@ describe('<api-property-form-item>', function() {
       element.model = model;
       element.readOnly = true;
       await nextFrame();
-      await assert.isAccessible(element);
+      await assert.isAccessible(element, {
+        ignoredRules: ['color-contrast'],
+      });
     });
 
     it('is accessible when outlined', async () => {
@@ -127,7 +131,9 @@ describe('<api-property-form-item>', function() {
       element.model = model;
       element.outlined = true;
       await nextFrame();
-      await assert.isAccessible(element);
+      await assert.isAccessible(element, {
+        ignoredRules: ['color-contrast'],
+      });
     });
 
     it('is accessible when legacy', async () => {
@@ -135,7 +141,9 @@ describe('<api-property-form-item>', function() {
       element.model = model;
       element.legacy = true;
       await nextFrame();
-      await assert.isAccessible(element);
+      await assert.isAccessible(element, {
+        ignoredRules: ['color-contrast'],
+      });
     });
   });
 

@@ -1,11 +1,10 @@
 import { html } from 'lit-html';
-import { ArcDemoPage } from '@advanced-rest-client/arc-demo-helper/ArcDemoPage.js';
-import '@polymer/paper-toggle-button/paper-toggle-button.js';
+import { DemoPage } from '@advanced-rest-client/arc-demo-helper';
 import '@anypoint-web-components/anypoint-radio-button/anypoint-radio-button.js';
 import '@anypoint-web-components/anypoint-radio-button/anypoint-radio-group.js';
 import '../api-property-form-item.js';
 
-class ComponentDemo extends ArcDemoPage {
+class ComponentDemo extends DemoPage {
   constructor() {
     super();
     this.initObservableProperties([
@@ -123,7 +122,7 @@ class ComponentDemo extends ArcDemoPage {
       <div class="demo-container">
         <section class="card">
           <h3>Configuration</h3>
-          <paper-toggle-button @checked-changed="${this._readonlyHandler}">Read only</paper-toggle-button>
+          <anypoint-toggle-button @checked-changed="${this._readonlyHandler}">Read only</anypoint-toggle-button>
 
           <label id="styleLabel">Style</label>
           <anypoint-radio-group aria-labelledby="styleLabel" @selected-changed="${this._inputStyleChange}">
