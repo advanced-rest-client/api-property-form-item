@@ -19,6 +19,8 @@ import { AnypointDropdownMenu } from '@anypoint-web-components/anypoint-dropdown
  *
  * Also, use mixins and variables for `anypoint-input`, `paper-dropdown-menu`,
  * `anypoint-listbox`, and `anypoint-item` to style this element.
+ * 
+ * @fires changed When the value of the control change.
  */
 export class ApiPropertyFormItem extends ValidatableMixin(LitElement) {
   get styles(): CSSResult;
