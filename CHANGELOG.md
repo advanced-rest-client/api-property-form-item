@@ -505,3 +505,50 @@
 * fixing test after icons change [f685d5a](https://github.com/advanced-rest-client/api-property-form-item/commit/f685d5ae3a3887d6a28c48cc731e13ffcc5f4113) by Pawel Psztyc
 
 
+<a name="3.0.15"></a>
+## [3.0.15](https://github.com/advanced-rest-client/api-property-form-item/compare/3.0.8...3.0.15) (2020-11-11)
+
+### Build
+
+* bumping version [b025d13](https://github.com/advanced-rest-client/api-property-form-item/commit/b025d1387e483c108cab1aa71b362bbece7b3189) by Pawel Psztyc
+* bumping version [8869a28](https://github.com/advanced-rest-client/api-property-form-item/commit/8869a2856ae79536457662635ed87994fdd6f331) by Pawel Psztyc
+* bumping version [71fdc53](https://github.com/advanced-rest-client/api-property-form-item/commit/71fdc53f3fefb41ab550c144a3d1da3537eab57f) by Pawel
+
+
+### Update
+
+* [ci skip] automated merge master->stage. syncing main branches [7a2a60f](https://github.com/advanced-rest-client/api-property-form-item/commit/7a2a60fc37ce85a8c6253ec10538bacbec86a07f) by Ci agent
+* [ci skip] automated merge master->stage. syncing main branches [6e42119](https://github.com/advanced-rest-client/api-property-form-item/commit/6e421197517dc5be725d855c3ad4a0b91ad5a3b5) by Ci agent
+* upgrading types and testing [286fbfd](https://github.com/advanced-rest-client/api-property-form-item/commit/286fbfd81391602bd6629c75ccb38a0ea0641a31) by Pawel
+* updating dependencies [5232e11](https://github.com/advanced-rest-client/api-property-form-item/commit/5232e11f011b0dbb5ef28addf6cc75ed23542494) by Pawel Psztyc
+* upgrading depdndencies [cd6b239](https://github.com/advanced-rest-client/api-property-form-item/commit/cd6b239ff4a14239cb67391bf247338f6f776635) by Pawel Psztyc
+* embed css styles in render method [a57bb77](https://github.com/advanced-rest-client/api-property-form-item/commit/a57bb7759e9edb2c03974b57907db736a0377802) by TwoPlusTwoOne
+* replacing global icons with new ARC icons [ed3b2c4](https://github.com/advanced-rest-client/api-property-form-item/commit/ed3b2c4a6545f25ab281bd17b0d4ab79b88a09f8) by Pawel Psztyc
+* upgrading dependencies [631b018](https://github.com/advanced-rest-client/api-property-form-item/commit/631b0180f555597e8be5d48a8ad12cdb3f3983ee) by Pawel
+
+
+### Documentation
+
+* adding event definition [d345b91](https://github.com/advanced-rest-client/api-property-form-item/commit/d345b91587b9b95fd548c603ad3da64f337bfe44) by Pawel
+
+
+### Bug Fixes
+
+* fixing type definition for the model item [8691cd6](https://github.com/advanced-rest-client/api-property-form-item/commit/8691cd613f382bd9b817aead1ba64c886e39c6a8) by Pawel
+* fixes #3 - `input` event retargeting [a35ab67](https://github.com/advanced-rest-client/api-property-form-item/commit/a35ab670e90d824acc52b16d6a1d60f586b291ba) by Pawel Psztyc
+
+
+### Refactor
+
+* moving the impl to src/ folder [43e92bd](https://github.com/advanced-rest-client/api-property-form-item/commit/43e92bd166fb7267f70b73fb4f9a6daabf607752) by Pawel Psztyc
+* updating error message (Uri's request) [92e6819](https://github.com/advanced-rest-client/api-property-form-item/commit/92e68190a4462aac13d0cc0fb7cf77fd907ad874) by Pawel
+* deprecating `legacy` for `compatibility` [a3556da](https://github.com/advanced-rest-client/api-property-form-item/commit/a3556da43fdd90df01f10b37a1cb9cf2a2d5ec64) by Pawel
+
+
+### Testing
+
+* adding BS integration [33b695a](https://github.com/advanced-rest-client/api-property-form-item/commit/33b695a96ae6d890bbdb30a63e244398f22221a0) by Pawel Psztyc
+* updating tests configuration, adding Edge back to tests [a254889](https://github.com/advanced-rest-client/api-property-form-item/commit/a2548894905bbac1117f516e99702c1d87fcbbbe) by Pawel Psztyc
+* fixing test after icons change [f685d5a](https://github.com/advanced-rest-client/api-property-form-item/commit/f685d5ae3a3887d6a28c48cc731e13ffcc5f4113) by Pawel Psztyc
+
+
