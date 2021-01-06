@@ -10,10 +10,15 @@ An input to use with forms to render inputs based in ARC view-model
 <api-property-form-item model='{"schema":{"inputLabel": "Enter number value", "inputType": "number", "minimum": 1, "maximum": 100}}' name="numericModel" value="1"></api-property-form-item>
 ```
 
+## Deprecation notice
+
+This element is moved to `api-forms` repository and `@api-components/api-forms` package. This element will be deprecated and archived once the migration finish.
+
 ## Usage
 
 ### Installation
-```
+
+```sh
 npm install --save @api-components/api-property-form-item
 ```
 
@@ -81,21 +86,14 @@ The element provides 3 basic styling options:
 <api-property-form-item legacy></api-property-form-item>
 ```
 
-### Installation
-
-```sh
-git clone https://github.com/advanced-rest-client/api-property-form-item
-cd api-property-form-item
-npm install
-```
-
-### Running the demo locally
+## Running the demo locally
 
 ```sh
 npm start
 ```
 
-### Running the tests
+## Running the tests
+
 ```sh
 npm test
 ```
