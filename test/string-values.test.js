@@ -7,12 +7,12 @@ import {
 import * as sinon from 'sinon';
 import '../api-property-form-item.js';
 
-describe('<api-property-form-item>', function() {
+describe('<api-property-form-item>', () => {
   async function basicFixture() {
-    return (await fixture(html `<api-property-form-item></api-property-form-item>`));
+    return fixture(html `<api-property-form-item></api-property-form-item>`);
   }
 
-  describe('String values', function() {
+  describe('String values', () => {
     let element;
     let model;
     beforeEach(async () => {
@@ -29,59 +29,59 @@ describe('<api-property-form-item>', function() {
       await nextFrame();
     });
 
-    it('isEnum is false', function() {
+    it('isEnum is false', () => {
       assert.isFalse(element._isEnum);
     });
 
-    it('isInput is true', function() {
+    it('isInput is true', () => {
       assert.isTrue(element._isInput);
     });
 
-    it('isArray is false', function() {
+    it('isArray is false', () => {
       assert.isFalse(element._isArray);
     });
 
-    it('isBoolean is false', function() {
+    it('isBoolean is false', () => {
       assert.isFalse(element._isBoolean);
     });
 
-    it('arrayValue is undefined', function() {
+    it('arrayValue is undefined', () => {
       assert.isUndefined(element._arrayValue);
     });
 
-    it('Dropdown is not rendered', function() {
-      const shadowRoot = element.shadowRoot;
+    it('Dropdown is not rendered', () => {
+      const {shadowRoot} = element;
       const menu = shadowRoot.querySelector('anypoint-dropdown-menu');
       assert.notOk(menu);
     });
 
-    it('Input type is string', function() {
-      const shadowRoot = element.shadowRoot;
+    it('Input type is string', () => {
+      const {shadowRoot} = element;
       const node = shadowRoot.querySelector('anypoint-input');
       assert.equal(node.type, model.schema.inputType);
     });
 
-    it('Passing inputLabel model property', function() {
-      const shadowRoot = element.shadowRoot;
+    it('Passing inputLabel model property', () => {
+      const {shadowRoot} = element;
       const node = shadowRoot.querySelector('anypoint-input label');
       const value = node.innerText.trim();
       assert.equal(value, model.schema.inputLabel);
     });
 
-    it('Passing pattern model property', function() {
-      const shadowRoot = element.shadowRoot;
+    it('Passing pattern model property', () => {
+      const {shadowRoot} = element;
       const node = shadowRoot.querySelector('anypoint-input');
       assert.equal(node.pattern, model.schema.pattern);
     });
 
-    it('Passing required model property', function() {
-      const shadowRoot = element.shadowRoot;
+    it('Passing required model property', () => {
+      const {shadowRoot} = element;
       const node = shadowRoot.querySelector('anypoint-input');
       assert.isTrue(node.required);
     });
 
-    it('Passing inputPlaceholder model property', function() {
-      const shadowRoot = element.shadowRoot;
+    it('Passing inputPlaceholder model property', () => {
+      const {shadowRoot} = element;
       const node = shadowRoot.querySelector('anypoint-input');
       assert.equal(node.placeholder, model.schema.inputPlaceholder);
     });
@@ -207,6 +207,83 @@ describe('<api-property-form-item>', function() {
       input.dispatchEvent(new CustomEvent('input'));
       assert.isTrue(spy.called, 'event is dispatched');
       assert.equal(spy.args[0][0].target.value, 'test-value', 'target has value');
+    });
+  });
+
+  describe('required text input', () => {
+    let element = null;
+    let model;
+
+    beforeEach(async () => {
+      element = await basicFixture();
+      model = {
+        name: '',
+        value: undefined,
+        schema: {
+          required: true,
+          inputLabel: 'Enter value',
+        }
+      };
+      element.model = model;
+      await nextFrame();
+    });
+
+    it('should not set required if schema is required without minLength nor pattern', () => {
+      const input = element.shadowRoot.querySelector('anypoint-input');
+      assert.isNotTrue(input.required);
+    });
+
+    it('should show warning message if schema is required without minLength nor pattern', () => {
+      const input = element.shadowRoot.querySelector('anypoint-input');
+      assert.isUndefined(input.infoMessage);
+    });
+
+    it('should set required if schema is required with minLength', async () => {
+      model = { ...model, schema: { ...model.schema, minLength: 1 } };
+      element.model = model;
+      await nextFrame();
+      const input = element.shadowRoot.querySelector('anypoint-input');
+      assert.isTrue(input.required);
+    });
+
+    it('should not show warning message if schema is required with minLength', async () => {
+      model = { ...model, schema: { ...model.schema, minLength: 1 } };
+      element.model = model;
+      await nextFrame();
+      const input = element.shadowRoot.querySelector('anypoint-input');
+      assert.isUndefined(input.infoMessage);
+    });
+
+    it('should set required if schema is required with pattern', async () => {
+      model = { ...model, schema: { ...model.schema, pattern: '[a-zA-Z0-9_]*' } };
+      element.model = model;
+      await nextFrame();
+      const input = element.shadowRoot.querySelector('anypoint-input');
+      assert.isTrue(input.required);
+    });
+
+    it('should not show warning message if schema is required with pattern', async () => {
+      model = { ...model, schema: { ...model.schema, pattern: '[a-zA-Z0-9_]*' } };
+      element.model = model;
+      await nextFrame();
+      const input = element.shadowRoot.querySelector('anypoint-input');
+      assert.isUndefined(input.infoMessage);
+    });
+
+    it('should not set required if schema is not required with minLength', async () => {
+      model = { ...model, schema: { ...model.schema, minLength: 1, required: false } };
+      element.model = model;
+      await nextFrame();
+      const input = element.shadowRoot.querySelector('anypoint-input');
+      assert.isNotTrue(input.required);
+    });
+
+    it('should not set required if schema is not required with pattern', async () => {
+      model = { ...model, schema: { ...model.schema, pattern: '[a-zA-Z0-9_]*', required: false } };
+      element.model = model;
+      await nextFrame();
+      const input = element.shadowRoot.querySelector('anypoint-input');
+      assert.isNotTrue(input.required);
     });
   });
 });
