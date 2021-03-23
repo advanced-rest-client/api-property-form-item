@@ -77,7 +77,7 @@ describe('<api-property-form-item>', () => {
     it('Passing required model property', () => {
       const {shadowRoot} = element;
       const node = shadowRoot.querySelector('anypoint-input');
-      assert.isFalse(node.required);
+      assert.isUndefined(node.required);
     });
 
     it('Passing inputPlaceholder model property', () => {
