@@ -1,7 +1,7 @@
 {
   "name": "@api-components/api-property-form-item",
   "description": "An input to use with forms to render inputs based in ARC view-model",
-  "version": "3.0.15",
+  "version": "3.0.16",
   "license": "Apache-2.0",
   "main": "index.js",
   "module": "index.js",
